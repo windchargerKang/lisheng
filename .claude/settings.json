@@ -1,0 +1,11 @@
+{"commands": {
+  "harness": {
+    "setup": "harness-setup",
+    "propose": "harness-propose",
+    "plan": "harness-plan",
+    "apply": "harness-apply",
+    "review": "harness-review",
+    "archive": "harness-archive",
+    "knowledge": "harness-knowledge"
+  }
+}}
