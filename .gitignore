@@ -25,3 +25,6 @@ dist/
 # 数据库
 *.db
 *.sqlite
+
+# Worktrees
+.worktrees/
