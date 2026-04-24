@@ -15,6 +15,7 @@ class Agent(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="RESTRICT"), unique=True, nullable=False)
     region_id = Column(Integer, ForeignKey("regions.id", ondelete="RESTRICT"), unique=True, nullable=False)
     referrer_id = Column(Integer, ForeignKey("agents.id", ondelete="SET NULL"), nullable=True)  # 推荐区代
+    name = Column(String(100), nullable=True)  # 区代名称
     status = Column(String(20), nullable=False, default="active")
 
     # 关联

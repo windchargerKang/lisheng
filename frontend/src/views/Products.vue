@@ -12,6 +12,24 @@
     <el-card class="table-card">
       <el-table :data="tableData" border v-loading="loading">
         <el-table-column prop="id" label="ID" width="80" />
+        <el-table-column label="产品图片" width="100">
+          <template #default="{ row }">
+            <el-image
+              v-if="row.image_url || row.image"
+              :src="row.image_url || row.image"
+              :preview-src-list="[row.image_url || row.image]"
+              fit="cover"
+              style="width: 60px; height: 60px;"
+            >
+              <template #error>
+                <div class="image-error">
+                  <el-icon><Picture /></el-icon>
+                </div>
+              </template>
+            </el-image>
+            <div v-else class="no-image">无图</div>
+          </template>
+        </el-table-column>
         <el-table-column prop="name" label="产品名称" />
         <el-table-column prop="sku_code" label="SKU 编码" width="150" />
         <el-table-column prop="status" label="状态" width="100">
@@ -59,13 +77,50 @@
     </el-card>
 
     <!-- 新增/编辑产品对话框 -->
-    <el-dialog v-model="productDialogVisible" :title="productDialogTitle" width="500px">
+    <el-dialog v-model="productDialogVisible" :title="productDialogTitle" width="600px">
       <el-form :model="productForm" :rules="productRules" ref="productFormRef" label-width="100px">
         <el-form-item label="产品名称" prop="name">
           <el-input v-model="productForm.name" placeholder="请输入产品名称" />
         </el-form-item>
         <el-form-item label="SKU 编码" prop="sku_code">
           <el-input v-model="productForm.sku_code" placeholder="请输入 SKU 编码" />
+        </el-form-item>
+        <el-form-item label="产品图片" prop="image_url">
+          <el-upload
+            v-model:file-list="imageFileList"
+            :on-change="handleImageChange"
+            :limit="1"
+            list-type="picture-card"
+            :on-remove="handleImageRemove"
+            :before-upload="handleBeforeImageUpload"
+            :auto-upload="false"
+          >
+            <el-icon><Plus /></el-icon>
+          </el-upload>
+          <div class="form-tip">支持单张主图，点击可预览</div>
+        </el-form-item>
+        <el-form-item label="多图展示" prop="images">
+          <el-upload
+            v-model:file-list="multiImageFileList"
+            :on-change="handleMultiImageChange"
+            :limit="9"
+            list-type="picture-card"
+            :on-remove="handleMultiImageRemove"
+            :before-upload="handleBeforeImageUpload"
+            :auto-upload="false"
+          >
+            <el-icon><Plus /></el-icon>
+          </el-upload>
+          <div class="form-tip">最多 9 张，用于 H5 端轮播展示</div>
+        </el-form-item>
+        <el-form-item label="产品详情" prop="detail">
+          <el-input
+            v-model="productForm.detail"
+            type="textarea"
+            :rows="6"
+            placeholder="产品详情描述（支持 HTML 格式）"
+          />
+          <div class="form-tip">支持简单 HTML 标签，如 &lt;p&gt;、&lt;ul&gt;、&lt;li&gt; 等</div>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -98,6 +153,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { Picture } from '@element-plus/icons-vue'
 import apiClient from '@/api'
 
 interface Price {
@@ -110,6 +166,9 @@ interface Product {
   name: string
   sku_code: string
   status: string
+  image_url?: string | null
+  image?: string | null
+  images?: string[]
   prices?: Price[]
 }
 
@@ -122,6 +181,10 @@ const submitting = ref(false)
 const productFormRef = ref()
 const priceFormRef = ref()
 
+// 图片上传相关
+const imageFileList = ref<any[]>([])
+const multiImageFileList = ref<any[]>([])
+
 const pagination = reactive({
   page: 1,
   page_size: 10,
@@ -132,6 +195,9 @@ const productForm = reactive({
   id: null as number | null,
   name: '',
   sku_code: '',
+  image_url: '' as string | null,
+  images: [] as string[],
+  detail: '' as string | null,
 })
 
 const priceForm = reactive({
@@ -171,6 +237,11 @@ const handleAdd = () => {
   productForm.id = null
   productForm.name = ''
   productForm.sku_code = ''
+  productForm.image_url = null
+  productForm.images = []
+  productForm.detail = ''
+  imageFileList.value = []
+  multiImageFileList.value = []
   productDialogVisible.value = true
 }
 
@@ -179,6 +250,29 @@ const handleEdit = (row: Product) => {
   productForm.id = row.id
   productForm.name = row.name
   productForm.sku_code = row.sku_code
+  productForm.image_url = row.image_url || null
+  productForm.images = row.images || []
+  productForm.detail = row.detail || ''
+
+  // 设置图片列表
+  if (row.image_url) {
+    imageFileList.value = [{
+      url: row.image_url,
+      name: '主图'
+    }]
+  } else {
+    imageFileList.value = []
+  }
+
+  if (row.images && row.images.length > 0) {
+    multiImageFileList.value = row.images.map((url, index) => ({
+      url,
+      name: `图片${index + 1}`
+    }))
+  } else {
+    multiImageFileList.value = []
+  }
+
   productDialogVisible.value = true
 }
 
@@ -210,22 +304,24 @@ const handleProductSubmit = async () => {
   submitting.value = true
 
   try {
+    const submitData: any = {
+      name: productForm.name,
+      sku_code: productForm.sku_code,
+      image_url: productForm.image_url,
+      images: productForm.images,  // 空数组也要发送，以便后端清空多图
+      detail: productForm.detail,
+    }
+
     if (productForm.id) {
-      await apiClient.put(`/products/${productForm.id}`, {
-        name: productForm.name,
-        sku_code: productForm.sku_code,
-      })
+      await apiClient.put(`/products/${productForm.id}`, submitData)
       ElMessage.success('更新成功')
     } else {
-      await apiClient.post('/products', {
-        name: productForm.name,
-        sku_code: productForm.sku_code,
-        prices: [
-          { tier_type: 'retail', price: 0 },
-          { tier_type: 'shop', price: 0 },
-          { tier_type: 'agent', price: 0 },
-        ],
-      })
+      submitData.prices = [
+        { tier_type: 'retail', price: 0 },
+        { tier_type: 'shop', price: 0 },
+        { tier_type: 'agent', price: 0 },
+      ]
+      await apiClient.post('/products', submitData)
       ElMessage.success('创建成功')
     }
     productDialogVisible.value = false
@@ -234,6 +330,126 @@ const handleProductSubmit = async () => {
     ElMessage.error(error.response?.data?.detail || '操作失败')
   } finally {
     submitting.value = false
+  }
+}
+
+// 图片上传处理函数
+interface UploadFile {
+  raw?: File
+  url?: string
+  name?: string
+}
+
+const handleBeforeImageUpload = (file: File) => {
+  const isValidType = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'].includes(file.type)
+  const isLt5M = file.size / 1024 / 1024 < 5
+
+  if (!isValidType) {
+    ElMessage.error('只能上传 JPG/PNG/GIF/WebP 格式的图片!')
+    return false
+  }
+  if (!isLt5M) {
+    ElMessage.error('图片大小不能超过 5MB!')
+    return false
+  }
+  return true
+}
+
+const handleImageChange = async (file: UploadFile) => {
+  if (file.raw) {
+    try {
+      // 调用上传 API
+      const formData = new FormData()
+      formData.append('file', file.raw)
+      const response = await apiClient.post('/products/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      productForm.image_url = response.data.url
+      // 更新当前 file 对象的 url，让 el-upload 组件显示预览
+      file.url = response.data.url
+      file.name = response.data.filename
+      // 更新文件列表
+      imageFileList.value = [{
+        url: response.data.url,
+        name: response.data.filename
+      }]
+    } catch (error: any) {
+      ElMessage.error('图片上传失败')
+      throw error
+    }
+  } else if (file.url && !file.url.startsWith('blob:')) {
+    productForm.image_url = file.url
+  }
+}
+
+const handleImageRemove = () => {
+  productForm.image_url = null
+}
+
+const handleMultiImageChange = async (file: UploadFile & { uid?: number | string }) => {
+  if (file.raw) {
+    try {
+      const formData = new FormData()
+      formData.append('file', file.raw)
+      const response = await apiClient.post('/products/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+
+      const uploadedUrl = response.data.url as string
+      const uploadedName = response.data.filename as string
+
+      // 用 uid 精确替换当前文件，避免重复和不同步
+      multiImageFileList.value = multiImageFileList.value.map((f: any) => {
+        if (f.uid === file.uid) {
+          return {
+            ...f,
+            url: uploadedUrl,
+            name: uploadedName,
+          }
+        }
+        return f
+      })
+
+      // 双保险：如果未找到对应 uid，补入一条
+      if (!multiImageFileList.value.some((f: any) => f.url === uploadedUrl)) {
+        multiImageFileList.value.push({
+          uid: file.uid,
+          url: uploadedUrl,
+          name: uploadedName,
+        })
+      }
+
+      // 同步表单值（过滤 blob 并去重）
+      productForm.images = Array.from(
+        new Set(
+          multiImageFileList.value
+            .map((f: any) => f.url)
+            .filter((url): url is string => !!url && !url.startsWith('blob:'))
+        )
+      )
+    } catch (error: any) {
+      ElMessage.error('图片上传失败')
+      throw error
+    }
+  } else {
+    // 回显或移除后，统一从 fileList 同步一次
+    productForm.images = Array.from(
+      new Set(
+        multiImageFileList.value
+          .map((f: any) => f.url)
+          .filter((url): url is string => !!url && !url.startsWith('blob:'))
+      )
+    )
+  }
+}
+
+const handleMultiImageRemove = (file: UploadFile) => {
+  const url = file.url
+  if (url) {
+    // 从表单数据中移除（创建新数组以触发响应式更新）
+    productForm.images = [...productForm.images.filter(img => img !== url)]
+    // 从文件列表中移除，保持 UI 同步
+    multiImageFileList.value = [...multiImageFileList.value.filter(f => f.url !== url)]
   }
 }
 
@@ -294,5 +510,37 @@ onMounted(() => {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+.no-image {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f7fa;
+  color: #909399;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.image-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f7fa;
+  color: #909399;
+}
+
+.form-tip {
+  font-size: 12px;
+  color: #909399;
+  margin-top: 4px;
+}
+
+:deep(.el-upload-list--picture-card) {
+  margin-top: 8px;
 }
 </style>

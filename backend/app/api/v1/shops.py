@@ -4,29 +4,37 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
+from sqlalchemy.orm import aliased
 from typing import Optional, List
+from pydantic import BaseModel
 
 from app.core.database import get_db
 from app.models.shop import Shop
 from app.models.user import User
+from app.models.region import Region
+from app.models.agent import Agent
 from app.api.v1.auth import get_current_user
 
 router = APIRouter()
 
 
-class ShopCreateRequest:
+class ShopCreateRequest(BaseModel):
     """创建店铺请求"""
-    def __init__(self, user_id: int, region_id: int, referrer_id: Optional[int] = None):
-        self.user_id = user_id
-        self.region_id = region_id
-        self.referrer_id = referrer_id
+    user_id: int
+    region_id: int
+    name: Optional[str] = None  # 店铺名称
+    agent_id: Optional[int] = None  # 绑定区代
 
 
-class ShopUpdateRequest:
+class ShopUpdateRequest(BaseModel):
     """更新店铺请求"""
-    def __init__(self, region_id: Optional[int] = None, status: Optional[str] = None):
-        self.region_id = region_id
-        self.status = status
+    name: Optional[str] = None
+    user_id: Optional[int] = None
+    region_id: Optional[int] = None
+    agent_id: Optional[int] = None
+    status: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
 
 
 @router.get("")
@@ -39,7 +47,13 @@ async def list_shops(
     current_user: User = Depends(get_current_user)
 ):
     """获取店铺列表（分页、筛选）"""
-    query = select(Shop)
+    # 使用 join 查询获取关联名称
+    query = (
+        select(Shop, User, Region, Agent)
+        .join(User, Shop.user_id == User.id)
+        .join(Region, Shop.region_id == Region.id)
+        .outerjoin(Agent, Shop.agent_id == Agent.id)
+    )
 
     if region_id:
         query = query.where(Shop.region_id == region_id)
@@ -51,9 +65,9 @@ async def list_shops(
     query = query.offset(offset).limit(page_size)
 
     result = await db.execute(query)
-    shops = result.scalars().all()
+    rows = result.all()
 
-    # 获取总数（使用 count 查询，避免大数据量下性能问题）
+    # 获取总数
     count_query = select(func.count(Shop.id))
     if region_id:
         count_query = count_query.where(Shop.region_id == region_id)
@@ -67,11 +81,17 @@ async def list_shops(
             {
                 "id": shop.id,
                 "user_id": shop.user_id,
+                "username": user.username,
+                "name": shop.name,
                 "region_id": shop.region_id,
-                "referrer_id": shop.referrer_id,
+                "region_name": region.name,
+                "agent_id": shop.agent_id,
+                "agent_name": agent.name if agent else None,
                 "status": shop.status,
+                "latitude": float(shop.latitude) if shop.latitude else None,
+                "longitude": float(shop.longitude) if shop.longitude else None,
             }
-            for shop in shops
+            for shop, user, region, agent in rows
         ],
         "total": total,
         "page": page,
@@ -89,14 +109,15 @@ async def create_shop(
     shop = Shop(
         user_id=request.user_id,
         region_id=request.region_id,
-        referrer_id=request.referrer_id,
+        name=request.name,
+        agent_id=request.agent_id,
         status="active"
     )
     db.add(shop)
     await db.commit()
     await db.refresh(shop)
 
-    return {"id": shop.id, "user_id": shop.user_id, "region_id": shop.region_id}
+    return {"id": shop.id, "user_id": shop.user_id, "name": shop.name, "region_id": shop.region_id, "agent_id": shop.agent_id}
 
 
 @router.get("/{shop_id}")
@@ -115,9 +136,12 @@ async def get_shop(
     return {
         "id": shop.id,
         "user_id": shop.user_id,
+        "name": shop.name,
         "region_id": shop.region_id,
-        "referrer_id": shop.referrer_id,
+        "agent_id": shop.agent_id,
         "status": shop.status,
+        "latitude": float(shop.latitude) if shop.latitude else None,
+        "longitude": float(shop.longitude) if shop.longitude else None,
     }
 
 
@@ -135,12 +159,31 @@ async def update_shop(
     if not shop:
         raise HTTPException(status_code=404, detail="店铺不存在")
 
-    if request.region_id:
+    if request.name is not None:
+        shop.name = request.name
+    if request.user_id is not None:
+        shop.user_id = request.user_id
+    if request.region_id is not None:
         shop.region_id = request.region_id
-    if request.status:
+    if request.agent_id is not None:
+        shop.agent_id = request.agent_id
+    if request.status is not None:
         shop.status = request.status
+    if request.latitude is not None:
+        shop.latitude = request.latitude
+    if request.longitude is not None:
+        shop.longitude = request.longitude
 
     await db.commit()
     await db.refresh(shop)
 
-    return {"id": shop.id, "region_id": shop.region_id, "status": shop.status}
+    return {
+        "id": shop.id,
+        "user_id": shop.user_id,
+        "name": shop.name,
+        "region_id": shop.region_id,
+        "agent_id": shop.agent_id,
+        "status": shop.status,
+        "latitude": float(shop.latitude) if shop.latitude else None,
+        "longitude": float(shop.longitude) if shop.longitude else None,
+    }

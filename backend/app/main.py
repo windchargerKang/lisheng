@@ -1,8 +1,10 @@
 """
 FastAPI 应用入口
 """
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.core.config import settings
 from app.api.v1 import api_router
@@ -27,6 +29,11 @@ def create_app() -> FastAPI:
 
     # 注册路由
     app.include_router(api_router, prefix=settings.API_V1_PREFIX)
+
+    # 挂载静态文件目录（产品图片上传）
+    upload_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "uploads")
+    if os.path.exists(upload_dir):
+        app.mount("/uploads", StaticFiles(directory=upload_dir), name="uploads")
 
     @app.get("/health")
     def health_check():

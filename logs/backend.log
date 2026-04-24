@@ -1,0 +1,1299 @@
+INFO:     Started server process [82195]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2026-04-24 22:36:50,904 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:36:50,948 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:36:50,948 INFO sqlalchemy.engine.Engine [generated in 0.00015s] (3,)
+2026-04-24 22:36:50,948 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:36:50,948 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:36:50,948 INFO sqlalchemy.engine.Engine [cached since 0.0006842s ago] (3,)
+2026-04-24 22:36:50,948 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:36:50,948 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:36:50,948 INFO sqlalchemy.engine.Engine [cached since 0.000959s ago] (3,)
+2026-04-24 22:36:50,949 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:36:50,949 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:36:50,949 INFO sqlalchemy.engine.Engine [cached since 0.001222s ago] (3,)
+2026-04-24 22:36:50,953 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:36:50,953 INFO sqlalchemy.engine.Engine [generated in 0.00018s] (1,)
+2026-04-24 22:36:50,954 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:36:50,954 INFO sqlalchemy.engine.Engine [cached since 0.000709s ago] (1,)
+2026-04-24 22:36:50,954 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:36:50,954 INFO sqlalchemy.engine.Engine [cached since 0.001225s ago] (1,)
+2026-04-24 22:36:50,955 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:36:50,955 INFO sqlalchemy.engine.Engine [cached since 0.001631s ago] (1,)
+2026-04-24 22:36:50,958 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status, users.id AS id_1, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status AS status_1, users.last_login_at, users.last_login_ip, users.created_at, regions.id AS id_2, regions.parent_id, regions.name AS name_1, regions.level, regions.path, agents_1.id AS id_3, agents_1.user_id AS user_id_1, agents_1.region_id AS region_id_1, agents_1.referrer_id AS referrer_id_1, agents_1.name AS name_2, agents_1.status AS status_2 
+FROM agents JOIN users ON agents.user_id = users.id JOIN regions ON agents.region_id = regions.id LEFT OUTER JOIN agents AS agents_1 ON agents.referrer_id = agents_1.id
+ LIMIT ? OFFSET ?
+2026-04-24 22:36:50,958 INFO sqlalchemy.engine.Engine [generated in 0.00016s] (10, 0)
+2026-04-24 22:36:50,963 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status, users.id AS id_1, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status AS status_1, users.last_login_at, users.last_login_ip, users.created_at, regions.id AS id_2, regions.parent_id, regions.name AS name_1, regions.level, regions.path, agents_1.id AS id_3, agents_1.user_id AS user_id_1, agents_1.region_id AS region_id_1, agents_1.referrer_id AS referrer_id_1, agents_1.name AS name_2, agents_1.status AS status_2 
+FROM agents JOIN users ON agents.user_id = users.id JOIN regions ON agents.region_id = regions.id LEFT OUTER JOIN agents AS agents_1 ON agents.referrer_id = agents_1.id
+ LIMIT ? OFFSET ?
+2026-04-24 22:36:50,963 INFO sqlalchemy.engine.Engine [cached since 0.0049s ago] (100, 0)
+2026-04-24 22:36:50,964 INFO sqlalchemy.engine.Engine SELECT regions.id, regions.parent_id, regions.name, regions.level, regions.path 
+FROM regions ORDER BY regions.path
+2026-04-24 22:36:50,964 INFO sqlalchemy.engine.Engine [generated in 0.00007s] ()
+2026-04-24 22:36:50,965 INFO sqlalchemy.engine.Engine SELECT count(*) AS count_1 
+FROM users
+2026-04-24 22:36:50,965 INFO sqlalchemy.engine.Engine [generated in 0.00005s] ()
+2026-04-24 22:36:50,966 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?, ?, ?)
+2026-04-24 22:36:50,966 INFO sqlalchemy.engine.Engine [cached since 0.01248s ago] (1, 3, 7)
+2026-04-24 22:36:50,966 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?, ?, ?)
+2026-04-24 22:36:50,966 INFO sqlalchemy.engine.Engine [cached since 0.01319s ago] (1, 3, 7)
+2026-04-24 22:36:50,967 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users ORDER BY users.created_at DESC, users.id DESC
+ LIMIT ? OFFSET ?
+2026-04-24 22:36:50,967 INFO sqlalchemy.engine.Engine [generated in 0.00006s] (100, 0)
+2026-04-24 22:36:50,968 INFO sqlalchemy.engine.Engine SELECT count(agents.id) AS count_1 
+FROM agents
+2026-04-24 22:36:50,968 INFO sqlalchemy.engine.Engine [generated in 0.00007s] ()
+2026-04-24 22:36:50,968 INFO sqlalchemy.engine.Engine SELECT count(agents.id) AS count_1 
+FROM agents
+2026-04-24 22:36:50,969 INFO sqlalchemy.engine.Engine [cached since 0.0007072s ago] ()
+2026-04-24 22:36:50,969 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 22:36:50,970 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?, ?, ?, ?)
+2026-04-24 22:36:50,970 INFO sqlalchemy.engine.Engine [generated in 0.00009s] (1, 3, 6, 7)
+2026-04-24 22:36:50,970 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:58406 - "GET /api/v1/agents?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 22:36:50,972 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:58405 - "GET /api/v1/agents?page=1&page_size=100 HTTP/1.1" 200 OK
+2026-04-24 22:36:50,986 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:58404 - "GET /api/v1/users?page=1&page_size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58403 - "GET /api/v1/regions HTTP/1.1" 200 OK
+2026-04-24 22:37:52,184 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:37:52,185 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:37:52,185 INFO sqlalchemy.engine.Engine [cached since 61.24s ago] (3,)
+2026-04-24 22:37:52,185 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:37:52,185 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:37:52,185 INFO sqlalchemy.engine.Engine [cached since 61.24s ago] (3,)
+2026-04-24 22:37:52,185 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:37:52,186 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:37:52,186 INFO sqlalchemy.engine.Engine [cached since 61.24s ago] (3,)
+2026-04-24 22:37:52,186 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:37:52,186 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:37:52,186 INFO sqlalchemy.engine.Engine [cached since 61.24s ago] (3,)
+2026-04-24 22:37:52,190 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:37:52,190 INFO sqlalchemy.engine.Engine [cached since 61.24s ago] (1,)
+2026-04-24 22:37:52,191 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:37:52,191 INFO sqlalchemy.engine.Engine [cached since 61.24s ago] (1,)
+2026-04-24 22:37:52,192 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:37:52,192 INFO sqlalchemy.engine.Engine [cached since 61.24s ago] (1,)
+2026-04-24 22:37:52,193 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:37:52,193 INFO sqlalchemy.engine.Engine [cached since 61.24s ago] (1,)
+2026-04-24 22:37:52,194 INFO sqlalchemy.engine.Engine SELECT regions.id, regions.parent_id, regions.name, regions.level, regions.path 
+FROM regions ORDER BY regions.path
+2026-04-24 22:37:52,194 INFO sqlalchemy.engine.Engine [cached since 61.23s ago] ()
+2026-04-24 22:37:52,195 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status, users.id AS id_1, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status AS status_1, users.last_login_at, users.last_login_ip, users.created_at, regions.id AS id_2, regions.parent_id, regions.name AS name_1, regions.level, regions.path, agents_1.id AS id_3, agents_1.user_id AS user_id_1, agents_1.region_id AS region_id_1, agents_1.referrer_id AS referrer_id_1, agents_1.name AS name_2, agents_1.status AS status_2 
+FROM agents JOIN users ON agents.user_id = users.id JOIN regions ON agents.region_id = regions.id LEFT OUTER JOIN agents AS agents_1 ON agents.referrer_id = agents_1.id
+ LIMIT ? OFFSET ?
+2026-04-24 22:37:52,196 INFO sqlalchemy.engine.Engine [cached since 61.24s ago] (10, 0)
+2026-04-24 22:37:52,197 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status, users.id AS id_1, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status AS status_1, users.last_login_at, users.last_login_ip, users.created_at, regions.id AS id_2, regions.parent_id, regions.name AS name_1, regions.level, regions.path, agents_1.id AS id_3, agents_1.user_id AS user_id_1, agents_1.region_id AS region_id_1, agents_1.referrer_id AS referrer_id_1, agents_1.name AS name_2, agents_1.status AS status_2 
+FROM agents JOIN users ON agents.user_id = users.id JOIN regions ON agents.region_id = regions.id LEFT OUTER JOIN agents AS agents_1 ON agents.referrer_id = agents_1.id
+ LIMIT ? OFFSET ?
+2026-04-24 22:37:52,197 INFO sqlalchemy.engine.Engine [cached since 61.24s ago] (100, 0)
+2026-04-24 22:37:52,197 INFO sqlalchemy.engine.Engine SELECT count(*) AS count_1 
+FROM users
+2026-04-24 22:37:52,197 INFO sqlalchemy.engine.Engine [cached since 61.23s ago] ()
+2026-04-24 22:37:52,198 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?, ?, ?)
+2026-04-24 22:37:52,198 INFO sqlalchemy.engine.Engine [cached since 61.25s ago] (1, 3, 7)
+2026-04-24 22:37:52,199 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?, ?, ?)
+2026-04-24 22:37:52,200 INFO sqlalchemy.engine.Engine [cached since 61.25s ago] (1, 3, 7)
+2026-04-24 22:37:52,200 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users ORDER BY users.created_at DESC, users.id DESC
+ LIMIT ? OFFSET ?
+2026-04-24 22:37:52,200 INFO sqlalchemy.engine.Engine [cached since 61.23s ago] (100, 0)
+2026-04-24 22:37:52,201 INFO sqlalchemy.engine.Engine SELECT count(agents.id) AS count_1 
+FROM agents
+2026-04-24 22:37:52,201 INFO sqlalchemy.engine.Engine [cached since 61.23s ago] ()
+2026-04-24 22:37:52,202 INFO sqlalchemy.engine.Engine SELECT count(agents.id) AS count_1 
+FROM agents
+2026-04-24 22:37:52,202 INFO sqlalchemy.engine.Engine [cached since 61.23s ago] ()
+2026-04-24 22:37:52,202 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?, ?, ?, ?)
+2026-04-24 22:37:52,202 INFO sqlalchemy.engine.Engine [cached since 61.23s ago] (1, 3, 6, 7)
+2026-04-24 22:37:52,214 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 22:37:52,215 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:59057 - "GET /api/v1/regions HTTP/1.1" 200 OK
+2026-04-24 22:37:52,216 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 22:37:52,217 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:59060 - "GET /api/v1/agents?page=1&page_size=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59059 - "GET /api/v1/agents?page=1&page_size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59058 - "GET /api/v1/users?page=1&page_size=100 HTTP/1.1" 200 OK
+2026-04-24 22:38:08,183 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:38:08,184 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.phone_number = ? OR users.username = ?
+2026-04-24 22:38:08,184 INFO sqlalchemy.engine.Engine [generated in 0.00027s] ('18838280126', '18838280126')
+2026-04-24 22:38:08,187 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:38:08,187 INFO sqlalchemy.engine.Engine [cached since 77.22s ago] (6,)
+2026-04-24 22:38:08,504 INFO sqlalchemy.engine.Engine UPDATE users SET last_login_at=? WHERE users.id = ?
+2026-04-24 22:38:08,504 INFO sqlalchemy.engine.Engine [generated in 0.00024s] ('2026-04-24 22:38:08.501238', 6)
+2026-04-24 22:38:08,505 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 22:38:08,507 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:38:08,508 INFO sqlalchemy.engine.Engine INSERT INTO operation_logs (user_id, action, resource_type, resource_id, ip_address, user_agent, details) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at
+2026-04-24 22:38:08,508 INFO sqlalchemy.engine.Engine [generated in 0.00011s] (6, 'LOGIN', 'USER', 6, '127.0.0.1', None, '{"username": "18838280126"}')
+2026-04-24 22:38:08,509 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:59274 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+2026-04-24 22:38:08,610 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:38:08,611 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:38:08,611 INFO sqlalchemy.engine.Engine [cached since 77.66s ago] (6,)
+2026-04-24 22:38:08,616 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:38:08,616 INFO sqlalchemy.engine.Engine [cached since 77.66s ago] (6,)
+2026-04-24 22:38:08,622 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products
+ LIMIT ? OFFSET ?
+2026-04-24 22:38:08,622 INFO sqlalchemy.engine.Engine [generated in 0.00047s] (10, 0)
+2026-04-24 22:38:08,626 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?, ?, ?)
+2026-04-24 22:38:08,626 INFO sqlalchemy.engine.Engine [generated in 0.00021s] (1, 2, 3)
+2026-04-24 22:38:08,628 INFO sqlalchemy.engine.Engine SELECT count(products.id) AS count_1 
+FROM products
+2026-04-24 22:38:08,629 INFO sqlalchemy.engine.Engine [generated in 0.00027s] ()
+2026-04-24 22:38:08,631 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:38:08,631 INFO sqlalchemy.engine.Engine [generated in 0.00042s] (6,)
+2026-04-24 22:38:08,635 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:38:08,635 INFO sqlalchemy.engine.Engine [generated in 0.00021s] (6,)
+2026-04-24 22:38:08,636 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:59281 - "GET /api/v1/products?page=1&page_size=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59286 - "GET /uploads/products/1c0e715701384e02acd52f8797793282.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59289 - "GET /uploads/products/08f9fff50d5649eea228034059219ef3.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59287 - "GET /uploads/products/caf30cb689cc4e7fb0815480e5930d2d.png HTTP/1.1" 200 OK
+2026-04-24 22:39:06,241 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:39:06,242 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:39:06,242 INFO sqlalchemy.engine.Engine [cached since 135.3s ago] (6,)
+2026-04-24 22:39:06,242 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:39:06,242 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:39:06,242 INFO sqlalchemy.engine.Engine [cached since 135.3s ago] (6,)
+2026-04-24 22:39:06,244 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:39:06,244 INFO sqlalchemy.engine.Engine [cached since 135.3s ago] (6,)
+2026-04-24 22:39:06,245 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:39:06,245 INFO sqlalchemy.engine.Engine [cached since 135.3s ago] (6,)
+2026-04-24 22:39:06,247 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products 
+WHERE products.id = ?
+2026-04-24 22:39:06,247 INFO sqlalchemy.engine.Engine [generated in 0.00025s] (1,)
+2026-04-24 22:39:06,253 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:39:06,253 INFO sqlalchemy.engine.Engine [generated in 0.00026s] (6,)
+2026-04-24 22:39:06,254 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?)
+2026-04-24 22:39:06,254 INFO sqlalchemy.engine.Engine [cached since 57.63s ago] (1,)
+2026-04-24 22:39:06,255 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 22:39:06,256 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:39:06,256 INFO sqlalchemy.engine.Engine [cached since 57.62s ago] (6,)
+INFO:     127.0.0.1:59776 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:39:06,256 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:39:06,257 INFO sqlalchemy.engine.Engine [cached since 57.62s ago] (6,)
+2026-04-24 22:39:06,258 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:59774 - "GET /api/v1/products/1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59780 - "GET /uploads/products/f3ec3c224a6e48e887b3ff30162b5e7b.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59782 - "GET /uploads/products/b57c7c39b8fa4894ad5319c9c5273e94.png HTTP/1.1" 200 OK
+2026-04-24 22:40:39,910 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:40:39,911 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:40:39,911 INFO sqlalchemy.engine.Engine [cached since 229s ago] (6,)
+2026-04-24 22:40:39,911 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:40:39,911 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:40:39,911 INFO sqlalchemy.engine.Engine [cached since 229s ago] (6,)
+2026-04-24 22:40:39,916 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:40:39,916 INFO sqlalchemy.engine.Engine [cached since 229s ago] (6,)
+2026-04-24 22:40:39,919 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:40:39,919 INFO sqlalchemy.engine.Engine [cached since 229s ago] (6,)
+2026-04-24 22:40:39,921 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:40:39,921 INFO sqlalchemy.engine.Engine [cached since 93.67s ago] (6,)
+2026-04-24 22:40:39,923 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products 
+WHERE products.id = ?
+2026-04-24 22:40:39,923 INFO sqlalchemy.engine.Engine [cached since 93.68s ago] (1,)
+2026-04-24 22:40:39,924 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 22:40:39,925 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?)
+2026-04-24 22:40:39,925 INFO sqlalchemy.engine.Engine [cached since 151.3s ago] (1,)
+INFO:     127.0.0.1:60614 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:40:39,927 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:40:39,928 INFO sqlalchemy.engine.Engine [cached since 151.3s ago] (6,)
+2026-04-24 22:40:39,928 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:40:39,928 INFO sqlalchemy.engine.Engine [cached since 151.3s ago] (6,)
+2026-04-24 22:40:39,929 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:60615 - "GET /api/v1/products/1 HTTP/1.1" 200 OK
+2026-04-24 22:40:40,729 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:40:40,729 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:40:40,729 INFO sqlalchemy.engine.Engine [cached since 229.8s ago] (6,)
+2026-04-24 22:40:40,729 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:40:40,729 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:40:40,729 INFO sqlalchemy.engine.Engine [cached since 229.8s ago] (6,)
+2026-04-24 22:40:40,730 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:40:40,731 INFO sqlalchemy.engine.Engine [cached since 229.8s ago] (6,)
+2026-04-24 22:40:40,732 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:40:40,732 INFO sqlalchemy.engine.Engine [cached since 229.8s ago] (6,)
+2026-04-24 22:40:40,733 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products 
+WHERE products.id = ?
+2026-04-24 22:40:40,733 INFO sqlalchemy.engine.Engine [cached since 94.49s ago] (1,)
+2026-04-24 22:40:40,735 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:40:40,735 INFO sqlalchemy.engine.Engine [cached since 94.48s ago] (6,)
+2026-04-24 22:40:40,737 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?)
+2026-04-24 22:40:40,737 INFO sqlalchemy.engine.Engine [cached since 152.1s ago] (1,)
+2026-04-24 22:40:40,739 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 22:40:40,741 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:40:40,741 INFO sqlalchemy.engine.Engine [cached since 152.1s ago] (6,)
+INFO:     127.0.0.1:60628 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:40:40,743 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:40:40,743 INFO sqlalchemy.engine.Engine [cached since 152.1s ago] (6,)
+2026-04-24 22:40:40,746 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:60627 - "GET /api/v1/products/1 HTTP/1.1" 200 OK
+2026-04-24 22:40:49,845 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:40:49,848 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:40:49,849 INFO sqlalchemy.engine.Engine [cached since 238.9s ago] (6,)
+2026-04-24 22:40:49,852 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:40:49,853 INFO sqlalchemy.engine.Engine [cached since 238.9s ago] (6,)
+2026-04-24 22:40:49,854 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:40:49,854 INFO sqlalchemy.engine.Engine [cached since 103.6s ago] (6,)
+2026-04-24 22:40:49,855 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:60700 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:40:52,076 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:40:52,077 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:40:52,078 INFO sqlalchemy.engine.Engine [cached since 241.1s ago] (6,)
+2026-04-24 22:40:52,082 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:40:52,082 INFO sqlalchemy.engine.Engine [cached since 241.1s ago] (6,)
+2026-04-24 22:40:52,087 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products
+ LIMIT ? OFFSET ?
+2026-04-24 22:40:52,087 INFO sqlalchemy.engine.Engine [cached since 163.5s ago] (10, 0)
+2026-04-24 22:40:52,089 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?, ?, ?)
+2026-04-24 22:40:52,089 INFO sqlalchemy.engine.Engine [cached since 163.5s ago] (1, 2, 3)
+2026-04-24 22:40:52,092 INFO sqlalchemy.engine.Engine SELECT count(products.id) AS count_1 
+FROM products
+2026-04-24 22:40:52,092 INFO sqlalchemy.engine.Engine [cached since 163.5s ago] ()
+2026-04-24 22:40:52,093 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:40:52,093 INFO sqlalchemy.engine.Engine [cached since 163.5s ago] (6,)
+2026-04-24 22:40:52,094 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:40:52,094 INFO sqlalchemy.engine.Engine [cached since 163.5s ago] (6,)
+2026-04-24 22:40:52,094 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:60727 - "GET /api/v1/products?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 22:40:53,283 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:40:53,283 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:40:53,283 INFO sqlalchemy.engine.Engine [cached since 242.3s ago] (6,)
+2026-04-24 22:40:53,284 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:40:53,284 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:40:53,284 INFO sqlalchemy.engine.Engine [cached since 242.3s ago] (6,)
+2026-04-24 22:40:53,285 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:40:53,285 INFO sqlalchemy.engine.Engine [cached since 242.3s ago] (6,)
+2026-04-24 22:40:53,286 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:40:53,286 INFO sqlalchemy.engine.Engine [cached since 242.3s ago] (6,)
+2026-04-24 22:40:53,286 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products 
+WHERE products.id = ?
+2026-04-24 22:40:53,286 INFO sqlalchemy.engine.Engine [cached since 107s ago] (3,)
+2026-04-24 22:40:53,287 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:40:53,287 INFO sqlalchemy.engine.Engine [cached since 107s ago] (6,)
+2026-04-24 22:40:53,287 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?)
+2026-04-24 22:40:53,288 INFO sqlalchemy.engine.Engine [cached since 164.7s ago] (3,)
+2026-04-24 22:40:53,288 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 22:40:53,289 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:40:53,289 INFO sqlalchemy.engine.Engine [cached since 164.7s ago] (6,)
+INFO:     127.0.0.1:60748 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:40:53,292 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:40:53,292 INFO sqlalchemy.engine.Engine [cached since 164.7s ago] (6,)
+2026-04-24 22:40:53,293 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:60746 - "GET /api/v1/products/3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60752 - "GET /uploads/products/5df7283d8701401f8aec5fabc4e73266.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60754 - "GET /uploads/products/715b2315587f4e2fa23520353ac492ca.png HTTP/1.1" 200 OK
+2026-04-24 22:40:56,312 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:40:56,313 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:40:56,313 INFO sqlalchemy.engine.Engine [cached since 245.4s ago] (6,)
+2026-04-24 22:40:56,314 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:40:56,314 INFO sqlalchemy.engine.Engine [cached since 245.4s ago] (6,)
+2026-04-24 22:40:56,315 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:40:56,316 INFO sqlalchemy.engine.Engine [cached since 110.1s ago] (6,)
+2026-04-24 22:40:56,318 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:60778 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:40:58,223 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:40:58,224 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:40:58,224 INFO sqlalchemy.engine.Engine [cached since 247.3s ago] (6,)
+2026-04-24 22:40:58,228 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:40:58,228 INFO sqlalchemy.engine.Engine [cached since 247.3s ago] (6,)
+2026-04-24 22:40:58,231 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products
+ LIMIT ? OFFSET ?
+2026-04-24 22:40:58,231 INFO sqlalchemy.engine.Engine [cached since 169.6s ago] (10, 0)
+2026-04-24 22:40:58,234 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?, ?, ?)
+2026-04-24 22:40:58,234 INFO sqlalchemy.engine.Engine [cached since 169.6s ago] (1, 2, 3)
+2026-04-24 22:40:58,236 INFO sqlalchemy.engine.Engine SELECT count(products.id) AS count_1 
+FROM products
+2026-04-24 22:40:58,236 INFO sqlalchemy.engine.Engine [cached since 169.6s ago] ()
+2026-04-24 22:40:58,237 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:40:58,238 INFO sqlalchemy.engine.Engine [cached since 169.6s ago] (6,)
+2026-04-24 22:40:58,240 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:40:58,240 INFO sqlalchemy.engine.Engine [cached since 169.6s ago] (6,)
+2026-04-24 22:40:58,241 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:60794 - "GET /api/v1/products?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 22:41:16,697 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:16,703 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:16,703 INFO sqlalchemy.engine.Engine [cached since 265.8s ago] (6,)
+2026-04-24 22:41:16,706 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:16,707 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:16,707 INFO sqlalchemy.engine.Engine [cached since 265.8s ago] (6,)
+2026-04-24 22:41:16,715 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:16,715 INFO sqlalchemy.engine.Engine [cached since 265.8s ago] (6,)
+2026-04-24 22:41:16,719 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:16,721 INFO sqlalchemy.engine.Engine [cached since 265.8s ago] (6,)
+2026-04-24 22:41:16,728 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products 
+WHERE products.id = ?
+2026-04-24 22:41:16,728 INFO sqlalchemy.engine.Engine [cached since 130.5s ago] (1,)
+2026-04-24 22:41:16,746 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:41:16,747 INFO sqlalchemy.engine.Engine [cached since 130.5s ago] (6,)
+2026-04-24 22:41:16,753 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?)
+2026-04-24 22:41:16,753 INFO sqlalchemy.engine.Engine [cached since 188.1s ago] (1,)
+2026-04-24 22:41:16,759 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 22:41:16,762 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:41:16,762 INFO sqlalchemy.engine.Engine [cached since 188.1s ago] (6,)
+INFO:     127.0.0.1:60991 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:16,774 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:41:16,774 INFO sqlalchemy.engine.Engine [cached since 188.1s ago] (6,)
+2026-04-24 22:41:16,777 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:60990 - "GET /api/v1/products/1 HTTP/1.1" 200 OK
+2026-04-24 22:41:22,015 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:22,015 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:22,015 INFO sqlalchemy.engine.Engine [cached since 271.1s ago] (6,)
+2026-04-24 22:41:22,017 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:22,017 INFO sqlalchemy.engine.Engine [cached since 271.1s ago] (6,)
+2026-04-24 22:41:22,020 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products 
+WHERE products.id = ?
+2026-04-24 22:41:22,020 INFO sqlalchemy.engine.Engine [generated in 0.00019s] (1,)
+2026-04-24 22:41:22,021 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at 
+FROM cart_items 
+WHERE cart_items.user_id = ? AND cart_items.product_id = ?
+2026-04-24 22:41:22,021 INFO sqlalchemy.engine.Engine [generated in 0.00008s] (6, 1)
+2026-04-24 22:41:22,022 INFO sqlalchemy.engine.Engine INSERT INTO cart_items (user_id, product_id, quantity) VALUES (?, ?, ?) RETURNING id, created_at, updated_at
+2026-04-24 22:41:22,022 INFO sqlalchemy.engine.Engine [generated in 0.00009s] (6, 1, 1)
+2026-04-24 22:41:22,023 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61048 - "POST /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:22,032 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:22,032 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:22,032 INFO sqlalchemy.engine.Engine [cached since 271.1s ago] (6,)
+2026-04-24 22:41:22,034 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:22,034 INFO sqlalchemy.engine.Engine [cached since 271.1s ago] (6,)
+2026-04-24 22:41:22,034 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:41:22,034 INFO sqlalchemy.engine.Engine [cached since 135.8s ago] (6,)
+2026-04-24 22:41:22,035 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61051 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:23,469 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:23,469 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:23,469 INFO sqlalchemy.engine.Engine [cached since 272.5s ago] (6,)
+2026-04-24 22:41:23,471 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:23,471 INFO sqlalchemy.engine.Engine [cached since 272.5s ago] (6,)
+2026-04-24 22:41:23,471 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:41:23,471 INFO sqlalchemy.engine.Engine [cached since 137.2s ago] (6,)
+2026-04-24 22:41:23,472 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61063 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:26,025 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:26,025 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:26,025 INFO sqlalchemy.engine.Engine [cached since 275.1s ago] (6,)
+2026-04-24 22:41:26,030 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:26,030 INFO sqlalchemy.engine.Engine [cached since 275.1s ago] (6,)
+2026-04-24 22:41:26,034 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products
+ LIMIT ? OFFSET ?
+2026-04-24 22:41:26,034 INFO sqlalchemy.engine.Engine [cached since 197.4s ago] (10, 0)
+2026-04-24 22:41:26,035 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?, ?, ?)
+2026-04-24 22:41:26,035 INFO sqlalchemy.engine.Engine [cached since 197.4s ago] (1, 2, 3)
+2026-04-24 22:41:26,036 INFO sqlalchemy.engine.Engine SELECT count(products.id) AS count_1 
+FROM products
+2026-04-24 22:41:26,036 INFO sqlalchemy.engine.Engine [cached since 197.4s ago] ()
+2026-04-24 22:41:26,037 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:41:26,037 INFO sqlalchemy.engine.Engine [cached since 197.4s ago] (6,)
+2026-04-24 22:41:26,037 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:41:26,037 INFO sqlalchemy.engine.Engine [cached since 197.4s ago] (6,)
+2026-04-24 22:41:26,037 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61084 - "GET /api/v1/products?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 22:41:28,849 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:28,850 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:28,850 INFO sqlalchemy.engine.Engine [cached since 277.9s ago] (6,)
+2026-04-24 22:41:28,851 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:28,851 INFO sqlalchemy.engine.Engine [cached since 277.9s ago] (6,)
+2026-04-24 22:41:28,854 INFO sqlalchemy.engine.Engine SELECT orders.id, orders.order_no, orders.user_id, orders.order_type, orders.total_amount, orders.status, orders.verified_at, orders.receiver_name, orders.receiver_phone, orders.receiver_address, orders.remark, orders.paid_at, orders.courier_company, orders.courier_no, orders.shipped_at, orders.shipper_id, orders.created_at, orders.updated_at 
+FROM orders 
+WHERE orders.user_id = ? ORDER BY orders.created_at DESC
+ LIMIT ? OFFSET ?
+2026-04-24 22:41:28,854 INFO sqlalchemy.engine.Engine [generated in 0.00015s] (6, 10, 0)
+2026-04-24 22:41:28,856 INFO sqlalchemy.engine.Engine SELECT count(orders.id) AS count_1 
+FROM orders 
+WHERE orders.user_id = ?
+2026-04-24 22:41:28,856 INFO sqlalchemy.engine.Engine [generated in 0.00017s] (6,)
+2026-04-24 22:41:28,856 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61110 - "GET /api/v1/orders?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 22:41:30,197 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:30,197 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:30,198 INFO sqlalchemy.engine.Engine [cached since 279.3s ago] (6,)
+2026-04-24 22:41:30,200 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:30,200 INFO sqlalchemy.engine.Engine [cached since 279.2s ago] (6,)
+2026-04-24 22:41:30,202 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:41:30,202 INFO sqlalchemy.engine.Engine [cached since 143.9s ago] (6,)
+2026-04-24 22:41:30,203 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61119 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:31,363 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:31,363 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:31,363 INFO sqlalchemy.engine.Engine [cached since 280.4s ago] (6,)
+2026-04-24 22:41:31,366 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:31,366 INFO sqlalchemy.engine.Engine [cached since 280.4s ago] (6,)
+2026-04-24 22:41:31,368 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products
+ LIMIT ? OFFSET ?
+2026-04-24 22:41:31,368 INFO sqlalchemy.engine.Engine [cached since 202.7s ago] (10, 0)
+2026-04-24 22:41:31,368 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?, ?, ?)
+2026-04-24 22:41:31,368 INFO sqlalchemy.engine.Engine [cached since 202.7s ago] (1, 2, 3)
+2026-04-24 22:41:31,369 INFO sqlalchemy.engine.Engine SELECT count(products.id) AS count_1 
+FROM products
+2026-04-24 22:41:31,369 INFO sqlalchemy.engine.Engine [cached since 202.7s ago] ()
+2026-04-24 22:41:31,370 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:41:31,370 INFO sqlalchemy.engine.Engine [cached since 202.7s ago] (6,)
+2026-04-24 22:41:31,370 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:41:31,370 INFO sqlalchemy.engine.Engine [cached since 202.7s ago] (6,)
+2026-04-24 22:41:31,372 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61132 - "GET /api/v1/products?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 22:41:32,968 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:32,968 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:32,969 INFO sqlalchemy.engine.Engine [cached since 282s ago] (6,)
+2026-04-24 22:41:32,969 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:32,969 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:32,969 INFO sqlalchemy.engine.Engine [cached since 282s ago] (6,)
+2026-04-24 22:41:32,971 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:32,971 INFO sqlalchemy.engine.Engine [cached since 282s ago] (6,)
+2026-04-24 22:41:32,972 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:32,972 INFO sqlalchemy.engine.Engine [cached since 282s ago] (6,)
+2026-04-24 22:41:32,973 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products 
+WHERE products.id = ?
+2026-04-24 22:41:32,973 INFO sqlalchemy.engine.Engine [cached since 146.7s ago] (1,)
+2026-04-24 22:41:32,974 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:41:32,974 INFO sqlalchemy.engine.Engine [cached since 146.7s ago] (6,)
+2026-04-24 22:41:32,974 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?)
+2026-04-24 22:41:32,974 INFO sqlalchemy.engine.Engine [cached since 204.3s ago] (1,)
+2026-04-24 22:41:32,975 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 22:41:32,975 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:41:32,975 INFO sqlalchemy.engine.Engine [cached since 204.3s ago] (6,)
+INFO:     127.0.0.1:61149 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:32,976 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:41:32,976 INFO sqlalchemy.engine.Engine [cached since 204.3s ago] (6,)
+2026-04-24 22:41:32,977 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61148 - "GET /api/v1/products/1 HTTP/1.1" 200 OK
+2026-04-24 22:41:34,489 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:34,490 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:34,490 INFO sqlalchemy.engine.Engine [cached since 283.5s ago] (6,)
+2026-04-24 22:41:34,492 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:34,492 INFO sqlalchemy.engine.Engine [cached since 283.5s ago] (6,)
+2026-04-24 22:41:34,493 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products 
+WHERE products.id = ?
+2026-04-24 22:41:34,493 INFO sqlalchemy.engine.Engine [cached since 12.47s ago] (1,)
+2026-04-24 22:41:34,494 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at 
+FROM cart_items 
+WHERE cart_items.user_id = ? AND cart_items.product_id = ?
+2026-04-24 22:41:34,494 INFO sqlalchemy.engine.Engine [cached since 12.47s ago] (6, 1)
+2026-04-24 22:41:34,495 INFO sqlalchemy.engine.Engine UPDATE cart_items SET quantity=?, updated_at=CURRENT_TIMESTAMP WHERE cart_items.id = ?
+2026-04-24 22:41:34,495 INFO sqlalchemy.engine.Engine [generated in 0.00010s] (2, 7)
+2026-04-24 22:41:34,495 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61160 - "POST /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:34,506 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:34,506 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:34,506 INFO sqlalchemy.engine.Engine [cached since 283.6s ago] (6,)
+2026-04-24 22:41:34,508 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:34,508 INFO sqlalchemy.engine.Engine [cached since 283.6s ago] (6,)
+2026-04-24 22:41:34,508 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:41:34,508 INFO sqlalchemy.engine.Engine [cached since 148.3s ago] (6,)
+2026-04-24 22:41:34,509 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61163 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:35,445 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:35,446 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:35,446 INFO sqlalchemy.engine.Engine [cached since 284.5s ago] (6,)
+2026-04-24 22:41:35,449 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:35,449 INFO sqlalchemy.engine.Engine [cached since 284.5s ago] (6,)
+2026-04-24 22:41:35,450 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:41:35,450 INFO sqlalchemy.engine.Engine [cached since 149.2s ago] (6,)
+2026-04-24 22:41:35,451 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61174 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:36,416 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:36,417 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:36,417 INFO sqlalchemy.engine.Engine [cached since 285.5s ago] (6,)
+2026-04-24 22:41:36,420 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:36,420 INFO sqlalchemy.engine.Engine [cached since 285.5s ago] (6,)
+2026-04-24 22:41:36,422 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products
+ LIMIT ? OFFSET ?
+2026-04-24 22:41:36,422 INFO sqlalchemy.engine.Engine [cached since 207.8s ago] (10, 0)
+2026-04-24 22:41:36,425 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?, ?, ?)
+2026-04-24 22:41:36,425 INFO sqlalchemy.engine.Engine [cached since 207.8s ago] (1, 2, 3)
+2026-04-24 22:41:36,427 INFO sqlalchemy.engine.Engine SELECT count(products.id) AS count_1 
+FROM products
+2026-04-24 22:41:36,428 INFO sqlalchemy.engine.Engine [cached since 207.8s ago] ()
+2026-04-24 22:41:36,429 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:41:36,429 INFO sqlalchemy.engine.Engine [cached since 207.8s ago] (6,)
+2026-04-24 22:41:36,430 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:41:36,430 INFO sqlalchemy.engine.Engine [cached since 207.8s ago] (6,)
+2026-04-24 22:41:36,431 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61189 - "GET /api/v1/products?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 22:41:37,524 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:37,524 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:37,525 INFO sqlalchemy.engine.Engine [cached since 286.6s ago] (6,)
+2026-04-24 22:41:37,525 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:37,525 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:37,525 INFO sqlalchemy.engine.Engine [cached since 286.6s ago] (6,)
+2026-04-24 22:41:37,528 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:37,528 INFO sqlalchemy.engine.Engine [cached since 286.6s ago] (6,)
+2026-04-24 22:41:37,529 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:37,529 INFO sqlalchemy.engine.Engine [cached since 286.6s ago] (6,)
+2026-04-24 22:41:37,530 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products 
+WHERE products.id = ?
+2026-04-24 22:41:37,530 INFO sqlalchemy.engine.Engine [cached since 151.3s ago] (2,)
+2026-04-24 22:41:37,531 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:41:37,531 INFO sqlalchemy.engine.Engine [cached since 151.3s ago] (6,)
+2026-04-24 22:41:37,531 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?)
+2026-04-24 22:41:37,531 INFO sqlalchemy.engine.Engine [cached since 208.9s ago] (2,)
+2026-04-24 22:41:37,532 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 22:41:37,533 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:41:37,533 INFO sqlalchemy.engine.Engine [cached since 208.9s ago] (6,)
+INFO:     127.0.0.1:61201 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:37,533 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:41:37,533 INFO sqlalchemy.engine.Engine [cached since 208.9s ago] (6,)
+2026-04-24 22:41:37,535 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61200 - "GET /api/v1/products/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61210 - "GET /uploads/products/ea7ecf6e8da542c1930b3448165251c0.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61209 - "GET /uploads/products/7a4b24e86604466d940549f0da696c42.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61211 - "GET /uploads/products/4dc96399285746d09ea97a66aa03b369.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61213 - "GET /uploads/products/eedbc461c79a46dca193052ed5d15fe5.png HTTP/1.1" 200 OK
+2026-04-24 22:41:38,426 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:38,427 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:38,427 INFO sqlalchemy.engine.Engine [cached since 287.5s ago] (6,)
+2026-04-24 22:41:38,429 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:38,429 INFO sqlalchemy.engine.Engine [cached since 287.5s ago] (6,)
+2026-04-24 22:41:38,430 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products 
+WHERE products.id = ?
+2026-04-24 22:41:38,430 INFO sqlalchemy.engine.Engine [cached since 16.41s ago] (2,)
+2026-04-24 22:41:38,431 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at 
+FROM cart_items 
+WHERE cart_items.user_id = ? AND cart_items.product_id = ?
+2026-04-24 22:41:38,431 INFO sqlalchemy.engine.Engine [cached since 16.41s ago] (6, 2)
+2026-04-24 22:41:38,431 INFO sqlalchemy.engine.Engine INSERT INTO cart_items (user_id, product_id, quantity) VALUES (?, ?, ?) RETURNING id, created_at, updated_at
+2026-04-24 22:41:38,431 INFO sqlalchemy.engine.Engine [cached since 16.41s ago] (6, 2, 1)
+2026-04-24 22:41:38,432 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61223 - "POST /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:38,440 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:38,440 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:38,440 INFO sqlalchemy.engine.Engine [cached since 287.5s ago] (6,)
+2026-04-24 22:41:38,441 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:38,441 INFO sqlalchemy.engine.Engine [cached since 287.5s ago] (6,)
+2026-04-24 22:41:38,442 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:41:38,442 INFO sqlalchemy.engine.Engine [cached since 152.2s ago] (6,)
+2026-04-24 22:41:38,443 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61226 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:39,732 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:39,732 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:39,732 INFO sqlalchemy.engine.Engine [cached since 288.8s ago] (6,)
+2026-04-24 22:41:39,735 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:39,735 INFO sqlalchemy.engine.Engine [cached since 288.8s ago] (6,)
+2026-04-24 22:41:39,736 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:41:39,737 INFO sqlalchemy.engine.Engine [cached since 153.5s ago] (6,)
+2026-04-24 22:41:39,738 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61242 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:41,784 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:41,785 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:41,785 INFO sqlalchemy.engine.Engine [cached since 290.8s ago] (6,)
+2026-04-24 22:41:41,786 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:41,786 INFO sqlalchemy.engine.Engine [cached since 290.8s ago] (6,)
+2026-04-24 22:41:41,788 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products
+ LIMIT ? OFFSET ?
+2026-04-24 22:41:41,788 INFO sqlalchemy.engine.Engine [cached since 213.2s ago] (10, 0)
+2026-04-24 22:41:41,789 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?, ?, ?)
+2026-04-24 22:41:41,789 INFO sqlalchemy.engine.Engine [cached since 213.2s ago] (1, 2, 3)
+2026-04-24 22:41:41,790 INFO sqlalchemy.engine.Engine SELECT count(products.id) AS count_1 
+FROM products
+2026-04-24 22:41:41,790 INFO sqlalchemy.engine.Engine [cached since 213.2s ago] ()
+2026-04-24 22:41:41,792 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:41:41,792 INFO sqlalchemy.engine.Engine [cached since 213.2s ago] (6,)
+2026-04-24 22:41:41,793 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:41:41,793 INFO sqlalchemy.engine.Engine [cached since 213.2s ago] (6,)
+2026-04-24 22:41:41,795 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61258 - "GET /api/v1/products?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 22:41:44,267 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:44,267 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:44,268 INFO sqlalchemy.engine.Engine [cached since 293.3s ago] (6,)
+2026-04-24 22:41:44,271 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:44,272 INFO sqlalchemy.engine.Engine [cached since 293.3s ago] (6,)
+2026-04-24 22:41:44,275 INFO sqlalchemy.engine.Engine SELECT orders.id, orders.order_no, orders.user_id, orders.order_type, orders.total_amount, orders.status, orders.verified_at, orders.receiver_name, orders.receiver_phone, orders.receiver_address, orders.remark, orders.paid_at, orders.courier_company, orders.courier_no, orders.shipped_at, orders.shipper_id, orders.created_at, orders.updated_at 
+FROM orders 
+WHERE orders.user_id = ? ORDER BY orders.created_at DESC
+ LIMIT ? OFFSET ?
+2026-04-24 22:41:44,276 INFO sqlalchemy.engine.Engine [cached since 15.42s ago] (6, 10, 0)
+2026-04-24 22:41:44,278 INFO sqlalchemy.engine.Engine SELECT count(orders.id) AS count_1 
+FROM orders 
+WHERE orders.user_id = ?
+2026-04-24 22:41:44,278 INFO sqlalchemy.engine.Engine [cached since 15.42s ago] (6,)
+2026-04-24 22:41:44,279 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61278 - "GET /api/v1/orders?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 22:41:45,472 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:45,472 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:45,472 INFO sqlalchemy.engine.Engine [cached since 294.5s ago] (6,)
+2026-04-24 22:41:45,474 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:45,474 INFO sqlalchemy.engine.Engine [cached since 294.5s ago] (6,)
+2026-04-24 22:41:45,474 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61290 - "GET /api/v1/auth/roles HTTP/1.1" 200 OK
+2026-04-24 22:41:45,490 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:45,490 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:45,490 INFO sqlalchemy.engine.Engine [cached since 294.5s ago] (6,)
+2026-04-24 22:41:45,491 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:45,491 INFO sqlalchemy.engine.Engine [cached since 294.5s ago] (6,)
+2026-04-24 22:41:45,491 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61293 - "GET /api/v1/auth/profile HTTP/1.1" 200 OK
+2026-04-24 22:41:47,099 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:47,100 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:47,100 INFO sqlalchemy.engine.Engine [cached since 296.2s ago] (6,)
+2026-04-24 22:41:47,103 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:47,103 INFO sqlalchemy.engine.Engine [cached since 296.1s ago] (6,)
+2026-04-24 22:41:47,104 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:41:47,104 INFO sqlalchemy.engine.Engine [cached since 160.9s ago] (6,)
+2026-04-24 22:41:47,105 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61308 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:41:47,916 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:47,916 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:47,917 INFO sqlalchemy.engine.Engine [cached since 297s ago] (6,)
+2026-04-24 22:41:47,919 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:47,919 INFO sqlalchemy.engine.Engine [cached since 297s ago] (6,)
+2026-04-24 22:41:47,922 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products
+ LIMIT ? OFFSET ?
+2026-04-24 22:41:47,923 INFO sqlalchemy.engine.Engine [cached since 219.3s ago] (10, 0)
+2026-04-24 22:41:47,925 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?, ?, ?)
+2026-04-24 22:41:47,926 INFO sqlalchemy.engine.Engine [cached since 219.3s ago] (1, 2, 3)
+2026-04-24 22:41:47,927 INFO sqlalchemy.engine.Engine SELECT count(products.id) AS count_1 
+FROM products
+2026-04-24 22:41:47,927 INFO sqlalchemy.engine.Engine [cached since 219.3s ago] ()
+2026-04-24 22:41:47,927 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:41:47,927 INFO sqlalchemy.engine.Engine [cached since 219.3s ago] (6,)
+2026-04-24 22:41:47,928 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:41:47,928 INFO sqlalchemy.engine.Engine [cached since 219.3s ago] (6,)
+2026-04-24 22:41:47,928 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61319 - "GET /api/v1/products?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 22:41:51,257 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:51,259 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:51,259 INFO sqlalchemy.engine.Engine [cached since 300.3s ago] (6,)
+2026-04-24 22:41:51,264 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:51,264 INFO sqlalchemy.engine.Engine [cached since 300.3s ago] (6,)
+2026-04-24 22:41:51,266 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61346 - "GET /api/v1/auth/roles HTTP/1.1" 200 OK
+2026-04-24 22:41:51,275 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:51,276 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:51,276 INFO sqlalchemy.engine.Engine [cached since 300.3s ago] (6,)
+2026-04-24 22:41:51,278 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:51,278 INFO sqlalchemy.engine.Engine [cached since 300.3s ago] (6,)
+2026-04-24 22:41:51,279 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61349 - "GET /api/v1/auth/profile HTTP/1.1" 200 OK
+2026-04-24 22:41:52,667 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:41:52,668 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:41:52,668 INFO sqlalchemy.engine.Engine [cached since 301.7s ago] (6,)
+2026-04-24 22:41:52,670 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:41:52,670 INFO sqlalchemy.engine.Engine [cached since 301.7s ago] (6,)
+2026-04-24 22:41:52,672 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products
+ LIMIT ? OFFSET ?
+2026-04-24 22:41:52,672 INFO sqlalchemy.engine.Engine [cached since 224.1s ago] (10, 0)
+2026-04-24 22:41:52,674 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?, ?, ?)
+2026-04-24 22:41:52,674 INFO sqlalchemy.engine.Engine [cached since 224s ago] (1, 2, 3)
+2026-04-24 22:41:52,675 INFO sqlalchemy.engine.Engine SELECT count(products.id) AS count_1 
+FROM products
+2026-04-24 22:41:52,675 INFO sqlalchemy.engine.Engine [cached since 224s ago] ()
+2026-04-24 22:41:52,676 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:41:52,676 INFO sqlalchemy.engine.Engine [cached since 224s ago] (6,)
+2026-04-24 22:41:52,677 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:41:52,677 INFO sqlalchemy.engine.Engine [cached since 224s ago] (6,)
+2026-04-24 22:41:52,678 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61361 - "GET /api/v1/products?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 22:53:55,966 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:53:55,968 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:53:55,968 INFO sqlalchemy.engine.Engine [cached since 1025s ago] (6,)
+2026-04-24 22:53:55,969 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 22:53:55,969 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 22:53:55,969 INFO sqlalchemy.engine.Engine [cached since 1025s ago] (6,)
+2026-04-24 22:53:55,976 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:53:55,976 INFO sqlalchemy.engine.Engine [cached since 1025s ago] (6,)
+2026-04-24 22:53:55,976 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 22:53:55,976 INFO sqlalchemy.engine.Engine [cached since 1025s ago] (6,)
+2026-04-24 22:53:55,978 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 22:53:55,978 INFO sqlalchemy.engine.Engine [cached since 889.7s ago] (6,)
+2026-04-24 22:53:55,979 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products 
+WHERE products.id = ?
+2026-04-24 22:53:55,979 INFO sqlalchemy.engine.Engine [cached since 889.7s ago] (1,)
+2026-04-24 22:53:55,981 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?)
+2026-04-24 22:53:55,981 INFO sqlalchemy.engine.Engine [cached since 947.4s ago] (1,)
+2026-04-24 22:53:55,983 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 22:53:55,984 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 22:53:55,984 INFO sqlalchemy.engine.Engine [cached since 947.4s ago] (6,)
+INFO:     127.0.0.1:51641 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 22:53:55,986 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 22:53:55,986 INFO sqlalchemy.engine.Engine [cached since 947.4s ago] (6,)
+2026-04-24 22:53:55,987 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:51640 - "GET /api/v1/products/1 HTTP/1.1" 200 OK
+2026-04-24 23:02:09,758 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 23:02:09,759 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 23:02:09,760 INFO sqlalchemy.engine.Engine [cached since 1519s ago] (6,)
+2026-04-24 23:02:09,760 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 23:02:09,760 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 23:02:09,760 INFO sqlalchemy.engine.Engine [cached since 1519s ago] (6,)
+2026-04-24 23:02:09,768 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 23:02:09,769 INFO sqlalchemy.engine.Engine [cached since 1519s ago] (6,)
+2026-04-24 23:02:09,770 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 23:02:09,770 INFO sqlalchemy.engine.Engine [cached since 1519s ago] (6,)
+2026-04-24 23:02:09,771 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products 
+WHERE products.id = ?
+2026-04-24 23:02:09,771 INFO sqlalchemy.engine.Engine [cached since 1384s ago] (1,)
+2026-04-24 23:02:09,772 INFO sqlalchemy.engine.Engine SELECT cart_items.id, cart_items.user_id, cart_items.product_id, cart_items.quantity, cart_items.created_at, cart_items.updated_at, price_tiers_1.id AS id_1, price_tiers_1.product_id AS product_id_1, price_tiers_1.tier_type, price_tiers_1.price, price_tiers_1.updated_at AS updated_at_1, products_1.id AS id_2, products_1.name, products_1.sku_code, products_1.status, products_1.image, products_1.image_url, products_1.images, products_1.description, products_1.detail, products_1.stock, products_1.is_new, products_1.supplier_id, products_1.cost_price 
+FROM cart_items LEFT OUTER JOIN products AS products_1 ON products_1.id = cart_items.product_id LEFT OUTER JOIN price_tiers AS price_tiers_1 ON products_1.id = price_tiers_1.product_id 
+WHERE cart_items.user_id = ?
+2026-04-24 23:02:09,772 INFO sqlalchemy.engine.Engine [cached since 1384s ago] (6,)
+2026-04-24 23:02:09,773 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?)
+2026-04-24 23:02:09,773 INFO sqlalchemy.engine.Engine [cached since 1441s ago] (1,)
+2026-04-24 23:02:09,774 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 23:02:09,775 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 23:02:09,775 INFO sqlalchemy.engine.Engine [cached since 1441s ago] (6,)
+INFO:     127.0.0.1:56090 - "GET /api/v1/cart/items HTTP/1.1" 200 OK
+2026-04-24 23:02:09,776 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 23:02:09,777 INFO sqlalchemy.engine.Engine [cached since 1441s ago] (6,)
+2026-04-24 23:02:09,778 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:56089 - "GET /api/v1/products/1 HTTP/1.1" 200 OK
+2026-04-24 23:02:18,858 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 23:02:18,859 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 23:02:18,859 INFO sqlalchemy.engine.Engine [cached since 1528s ago] (6,)
+2026-04-24 23:02:18,864 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 23:02:18,864 INFO sqlalchemy.engine.Engine [cached since 1528s ago] (6,)
+2026-04-24 23:02:18,866 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products
+ LIMIT ? OFFSET ?
+2026-04-24 23:02:18,866 INFO sqlalchemy.engine.Engine [cached since 1450s ago] (10, 0)
+2026-04-24 23:02:18,867 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?, ?, ?)
+2026-04-24 23:02:18,867 INFO sqlalchemy.engine.Engine [cached since 1450s ago] (1, 2, 3)
+2026-04-24 23:02:18,868 INFO sqlalchemy.engine.Engine SELECT count(products.id) AS count_1 
+FROM products
+2026-04-24 23:02:18,868 INFO sqlalchemy.engine.Engine [cached since 1450s ago] ()
+2026-04-24 23:02:18,869 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 23:02:18,869 INFO sqlalchemy.engine.Engine [cached since 1450s ago] (6,)
+2026-04-24 23:02:18,870 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 23:02:18,870 INFO sqlalchemy.engine.Engine [cached since 1450s ago] (6,)
+2026-04-24 23:02:18,870 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:56213 - "GET /api/v1/products?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 23:02:25,856 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 23:02:25,857 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 23:02:25,857 INFO sqlalchemy.engine.Engine [cached since 1535s ago] (6,)
+2026-04-24 23:02:25,859 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 23:02:25,859 INFO sqlalchemy.engine.Engine [cached since 1535s ago] (6,)
+2026-04-24 23:02:25,860 INFO sqlalchemy.engine.Engine SELECT products.id, products.name, products.sku_code, products.status, products.image, products.image_url, products.images, products.description, products.detail, products.stock, products.is_new, products.supplier_id, products.cost_price 
+FROM products
+ LIMIT ? OFFSET ?
+2026-04-24 23:02:25,860 INFO sqlalchemy.engine.Engine [cached since 1457s ago] (10, 0)
+2026-04-24 23:02:25,861 INFO sqlalchemy.engine.Engine SELECT price_tiers.product_id AS price_tiers_product_id, price_tiers.id AS price_tiers_id, price_tiers.tier_type AS price_tiers_tier_type, price_tiers.price AS price_tiers_price, price_tiers.updated_at AS price_tiers_updated_at 
+FROM price_tiers 
+WHERE price_tiers.product_id IN (?, ?, ?)
+2026-04-24 23:02:25,861 INFO sqlalchemy.engine.Engine [cached since 1457s ago] (1, 2, 3)
+2026-04-24 23:02:25,863 INFO sqlalchemy.engine.Engine SELECT count(products.id) AS count_1 
+FROM products
+2026-04-24 23:02:25,863 INFO sqlalchemy.engine.Engine [cached since 1457s ago] ()
+2026-04-24 23:02:25,864 INFO sqlalchemy.engine.Engine SELECT shops.id, shops.user_id, shops.region_id, shops.agent_id, shops.name, shops.status, shops.latitude, shops.longitude 
+FROM shops 
+WHERE shops.user_id = ?
+2026-04-24 23:02:25,864 INFO sqlalchemy.engine.Engine [cached since 1457s ago] (6,)
+2026-04-24 23:02:25,865 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status 
+FROM agents 
+WHERE agents.user_id = ?
+2026-04-24 23:02:25,866 INFO sqlalchemy.engine.Engine [cached since 1457s ago] (6,)
+2026-04-24 23:02:25,867 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:56266 - "GET /api/v1/products?page=1&page_size=10 HTTP/1.1" 200 OK
+2026-04-24 23:02:27,868 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 23:02:27,868 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 23:02:27,868 INFO sqlalchemy.engine.Engine [cached since 1537s ago] (6,)
+2026-04-24 23:02:27,872 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 23:02:27,873 INFO sqlalchemy.engine.Engine [cached since 1537s ago] (6,)
+2026-04-24 23:02:27,879 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:56283 - "GET /api/v1/auth/roles HTTP/1.1" 200 OK
+2026-04-24 23:02:27,902 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 23:02:27,903 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 23:02:27,903 INFO sqlalchemy.engine.Engine [cached since 1537s ago] (6,)
+2026-04-24 23:02:27,904 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 23:02:27,904 INFO sqlalchemy.engine.Engine [cached since 1537s ago] (6,)
+2026-04-24 23:02:27,904 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:56286 - "GET /api/v1/auth/profile HTTP/1.1" 200 OK
+2026-04-24 23:03:44,982 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 23:03:44,983 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 23:03:44,983 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (3,)
+2026-04-24 23:03:44,983 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 23:03:44,984 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 23:03:44,984 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (3,)
+2026-04-24 23:03:44,984 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 23:03:44,984 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 23:03:44,984 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (3,)
+2026-04-24 23:03:44,984 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 23:03:44,984 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users 
+WHERE users.id = ?
+2026-04-24 23:03:44,984 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (3,)
+2026-04-24 23:03:44,988 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 23:03:44,989 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (1,)
+2026-04-24 23:03:44,989 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 23:03:44,989 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (1,)
+2026-04-24 23:03:44,990 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 23:03:44,990 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (1,)
+2026-04-24 23:03:44,990 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?)
+2026-04-24 23:03:44,990 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (1,)
+2026-04-24 23:03:44,995 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status, users.id AS id_1, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status AS status_1, users.last_login_at, users.last_login_ip, users.created_at, regions.id AS id_2, regions.parent_id, regions.name AS name_1, regions.level, regions.path, agents_1.id AS id_3, agents_1.user_id AS user_id_1, agents_1.region_id AS region_id_1, agents_1.referrer_id AS referrer_id_1, agents_1.name AS name_2, agents_1.status AS status_2 
+FROM agents JOIN users ON agents.user_id = users.id JOIN regions ON agents.region_id = regions.id LEFT OUTER JOIN agents AS agents_1 ON agents.referrer_id = agents_1.id
+ LIMIT ? OFFSET ?
+2026-04-24 23:03:44,995 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (10, 0)
+2026-04-24 23:03:44,995 INFO sqlalchemy.engine.Engine SELECT regions.id, regions.parent_id, regions.name, regions.level, regions.path 
+FROM regions ORDER BY regions.path
+2026-04-24 23:03:44,995 INFO sqlalchemy.engine.Engine [cached since 1614s ago] ()
+2026-04-24 23:03:44,997 INFO sqlalchemy.engine.Engine SELECT agents.id, agents.user_id, agents.region_id, agents.referrer_id, agents.name, agents.status, users.id AS id_1, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status AS status_1, users.last_login_at, users.last_login_ip, users.created_at, regions.id AS id_2, regions.parent_id, regions.name AS name_1, regions.level, regions.path, agents_1.id AS id_3, agents_1.user_id AS user_id_1, agents_1.region_id AS region_id_1, agents_1.referrer_id AS referrer_id_1, agents_1.name AS name_2, agents_1.status AS status_2 
+FROM agents JOIN users ON agents.user_id = users.id JOIN regions ON agents.region_id = regions.id LEFT OUTER JOIN agents AS agents_1 ON agents.referrer_id = agents_1.id
+ LIMIT ? OFFSET ?
+2026-04-24 23:03:44,997 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (100, 0)
+2026-04-24 23:03:44,999 INFO sqlalchemy.engine.Engine SELECT count(*) AS count_1 
+FROM users
+2026-04-24 23:03:44,999 INFO sqlalchemy.engine.Engine [cached since 1614s ago] ()
+2026-04-24 23:03:45,000 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?, ?, ?)
+2026-04-24 23:03:45,000 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (1, 3, 7)
+2026-04-24 23:03:45,002 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?, ?, ?)
+2026-04-24 23:03:45,002 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (1, 3, 7)
+2026-04-24 23:03:45,003 INFO sqlalchemy.engine.Engine SELECT users.id, users.username, users.password_hash, users.phone_number, users.role_id, users.supplier_id, users.status, users.last_login_at, users.last_login_ip, users.created_at 
+FROM users ORDER BY users.created_at DESC, users.id DESC
+ LIMIT ? OFFSET ?
+2026-04-24 23:03:45,003 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (100, 0)
+2026-04-24 23:03:45,015 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 23:03:45,016 INFO sqlalchemy.engine.Engine SELECT count(agents.id) AS count_1 
+FROM agents
+2026-04-24 23:03:45,016 INFO sqlalchemy.engine.Engine [cached since 1614s ago] ()
+2026-04-24 23:03:45,017 INFO sqlalchemy.engine.Engine SELECT count(agents.id) AS count_1 
+FROM agents
+2026-04-24 23:03:45,017 INFO sqlalchemy.engine.Engine [cached since 1614s ago] ()
+INFO:     127.0.0.1:57088 - "GET /api/v1/regions HTTP/1.1" 200 OK
+2026-04-24 23:03:45,018 INFO sqlalchemy.engine.Engine SELECT roles.id AS roles_id, roles.name AS roles_name, roles.code AS roles_code, roles.description AS roles_description, roles.created_at AS roles_created_at, roles.updated_at AS roles_updated_at 
+FROM roles 
+WHERE roles.id IN (?, ?, ?, ?)
+2026-04-24 23:03:45,019 INFO sqlalchemy.engine.Engine [cached since 1614s ago] (1, 3, 6, 7)
+2026-04-24 23:03:45,020 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 23:03:45,021 INFO sqlalchemy.engine.Engine COMMIT
+2026-04-24 23:03:45,024 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:57092 - "GET /api/v1/agents?page=1&page_size=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57090 - "GET /api/v1/agents?page=1&page_size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57089 - "GET /api/v1/users?page=1&page_size=100 HTTP/1.1" 200 OK

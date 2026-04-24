@@ -34,9 +34,10 @@
     <el-card class="table-card">
       <el-table :data="tableData" border v-loading="loading">
         <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="user_id" label="用户 ID" width="100" />
-        <el-table-column prop="region_id" label="区域 ID" width="100" />
-        <el-table-column prop="referrer_id" label="推荐区代 ID" width="120" />
+        <el-table-column prop="name" label="区代名称" width="150" />
+        <el-table-column prop="username" label="用户" width="120" />
+        <el-table-column prop="region_name" label="区域" width="120" />
+        <el-table-column prop="referrer_name" label="推荐区代" width="120" />
         <el-table-column prop="status" label="状态" width="100">
           <template #default="{ row }">
             <el-tag :type="row.status === 'active' ? 'success' : 'danger'">
@@ -68,14 +69,23 @@
     <!-- 新增/编辑对话框 -->
     <el-dialog v-model="dialogVisible" :title="dialogTitle" width="500px">
       <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
-        <el-form-item label="用户 ID" prop="user_id">
-          <el-input-number v-model="form.user_id" :min="1" placeholder="请输入用户 ID" style="width: 100%" />
+        <el-form-item label="区代名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入区代名称（可选）" style="width: 100%" />
         </el-form-item>
-        <el-form-item label="区域 ID" prop="region_id">
-          <el-input-number v-model="form.region_id" :min="1" placeholder="请输入区域 ID" style="width: 100%" />
+        <el-form-item label="用户" prop="user_id">
+          <el-select v-model="form.user_id" placeholder="请选择用户" filterable style="width: 100%">
+            <el-option v-for="user in users" :key="user.id" :label="user.username" :value="user.id" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="推荐区代 ID" prop="referrer_id">
-          <el-input-number v-model="form.referrer_id" :min="1" placeholder="请输入推荐区代 ID（可选）" style="width: 100%" />
+        <el-form-item label="区域" prop="region_id">
+          <el-select v-model="form.region_id" placeholder="请选择区域" filterable style="width: 100%">
+            <el-option v-for="region in regions" :key="region.id" :label="region.name" :value="region.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="推荐区代" prop="referrer_id">
+          <el-select v-model="form.referrer_id" placeholder="请选择推荐区代（可选）" filterable clearable style="width: 100%">
+            <el-option v-for="agent in agents" :key="agent.id" :label="agent.name || `区代${agent.id}`" :value="agent.id" />
+          </el-select>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -93,9 +103,13 @@ import apiClient from '@/api'
 
 interface Agent {
   id: number
+  name: string | null
   user_id: number
+  username?: string  // 用于列表显示
   region_id: number
+  region_name?: string  // 用于列表显示
   referrer_id: number | null
+  referrer_name?: string  // 用于列表显示
   status: string
 }
 
@@ -104,9 +118,16 @@ interface Region {
   name: string
 }
 
+interface User {
+  id: number
+  username: string
+}
+
 const loading = ref(false)
 const tableData = ref<Agent[]>([])
 const regions = ref<Region[]>([])
+const users = ref<User[]>([])
+const agents = ref<Agent[]>([])  // 用于推荐区代下拉框
 const dialogVisible = ref(false)
 const dialogTitle = ref('新增区代')
 const submitting = ref(false)
@@ -125,8 +146,9 @@ const pagination = reactive({
 
 const form = reactive({
   id: null as number | null,
-  user_id: 0,
-  region_id: 0,
+  name: '',
+  user_id: null as number | null,
+  region_id: null as number | null,
   referrer_id: null as number | null,
 })
 
@@ -146,6 +168,7 @@ const fetchAgents = async () => {
     if (filterForm.status) params.status = filterForm.status
 
     const response = await apiClient.get('/agents', { params })
+    console.log('区代列表响应:', response.data.items)
     tableData.value = response.data.items
     pagination.total = response.data.total
   } catch (error: any) {
@@ -174,11 +197,33 @@ const fetchRegions = async () => {
   }
 }
 
+const fetchUsers = async () => {
+  try {
+    const response = await apiClient.get('/users', { params: { page: 1, page_size: 100 } })
+    users.value = response.data.items.map((item: any) => ({
+      id: item.id,
+      username: item.username,
+    }))
+  } catch (error: any) {
+    console.error('加载用户失败', error)
+  }
+}
+
+const fetchAgentsList = async () => {
+  try {
+    const response = await apiClient.get('/agents', { params: { page: 1, page_size: 100 } })
+    agents.value = response.data.items
+  } catch (error: any) {
+    console.error('加载区代列表失败', error)
+  }
+}
+
 const handleAdd = () => {
   dialogTitle.value = '新增区代'
   form.id = null
-  form.user_id = 0
-  form.region_id = 0
+  form.name = ''
+  form.user_id = null
+  form.region_id = null
   form.referrer_id = null
   dialogVisible.value = true
 }
@@ -186,6 +231,7 @@ const handleAdd = () => {
 const handleEdit = (row: Agent) => {
   dialogTitle.value = '编辑区代'
   form.id = row.id
+  form.name = row.name || ''
   form.user_id = row.user_id
   form.region_id = row.region_id
   form.referrer_id = row.referrer_id
@@ -211,17 +257,35 @@ const handleSubmit = async () => {
 
   try {
     if (form.id) {
-      await apiClient.put(`/agents/${form.id}`, {
+      const updateData: Record<string, any> = {
+        name: form.name || undefined,
+        user_id: form.user_id || undefined,
         region_id: form.region_id || undefined,
         status: 'active',
-      })
+      }
+      // 明确处理 referrer_id：0 或空字符串表示清空，其他值则传递
+      if (form.referrer_id && form.referrer_id > 0) {
+        updateData.referrer_id = form.referrer_id
+      }
+      // 如果 referrer_id 为 0、null 或 undefined，则不传递该字段（保持原值）
+
+      console.log('提交更新数据:', updateData, 'form.referrer_id:', form.referrer_id)
+
+      await apiClient.put(`/agents/${form.id}`, updateData)
       ElMessage.success('更新成功')
     } else {
-      await apiClient.post('/agents', {
+      const createData: Record<string, any> = {
         user_id: form.user_id,
         region_id: form.region_id,
-        referrer_id: form.referrer_id || undefined,
-      })
+        name: form.name || undefined,
+      }
+      if (form.referrer_id && form.referrer_id > 0) {
+        createData.referrer_id = form.referrer_id
+      }
+
+      console.log('提交创建数据:', createData)
+
+      await apiClient.post('/agents', createData)
       ElMessage.success('创建成功')
     }
     dialogVisible.value = false
@@ -235,6 +299,8 @@ const handleSubmit = async () => {
 
 onMounted(() => {
   fetchRegions()
+  fetchUsers()
+  fetchAgentsList()
   fetchAgents()
 })
 </script>

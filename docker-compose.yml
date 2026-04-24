@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # 后端服务 (FastAPI)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: lisheng-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/uploads:/app/uploads  # 上传文件
+      - ./backend/logs:/app/logs  # 日志
+      - ./backend/channel_sales.db:/app/data/channel_sales.db  # 数据库
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./data/channel_sales.db
+      - SECRET_KEY=your-secret-key-change-in-production
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+    networks:
+      - lisheng-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # H5 前端 (C 端用户)
+  h5:
+    build:
+      context: ./h5
+      dockerfile: Dockerfile
+    container_name: lisheng-h5
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    volumes:
+      - ./backend/uploads:/usr/share/nginx/html/uploads
+    depends_on:
+      - backend
+    networks:
+      - lisheng-network
+
+  # 运营管理前端 (B 端管理)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: lisheng-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - lisheng-network
+
+networks:
+  lisheng-network:
+    driver: bridge
+

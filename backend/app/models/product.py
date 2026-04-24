@@ -1,9 +1,10 @@
 """
 Product 和 PriceTier 数据模型 - 产品管理
 """
-from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+from sqlalchemy.dialects.sqlite import JSON
 
 from app.core.database import Base
 
@@ -16,9 +17,19 @@ class Product(Base):
     name = Column(String(100), nullable=False)
     sku_code = Column(String(50), unique=True, nullable=False)
     status = Column(String(20), nullable=False, default="active")
+    image = Column(String(255), nullable=True)  # 商品图片 URL（旧字段，保留兼容）
+    image_url = Column(String(500), nullable=True)  # 产品主图 URL（新字段）
+    images = Column(JSON, nullable=True)  # 产品多图 JSON 数组 ["url1", "url2", ...]
+    description = Column(String(255), nullable=True)  # 商品简述
+    detail = Column(Text, nullable=True)  # 商品详情（HTML 富文本）
+    stock = Column(Integer, nullable=False, default=0)  # 库存数量
+    is_new = Column(Integer, nullable=False, default=0)  # 是否新品标记
+    supplier_id = Column(Integer, ForeignKey("suppliers.id"), nullable=True, index=True)  # 供应商 ID
+    cost_price = Column(Numeric(10, 2), nullable=True)  # 采购成本价
 
     # 关联
     prices = relationship("PriceTier", back_populates="product", cascade="all, delete-orphan")
+    supplier = relationship("Supplier")
 
 
 class PriceTier(Base):

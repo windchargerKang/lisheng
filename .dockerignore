@@ -1,0 +1,83 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# 文档
+*.md
+docs/
+openspec/
+
+# 测试
+.pytest_cache/
+.coverage
+htmlcov/
+tests/
+*.test
+*.spec
+
+# 开发文件
+.env
+.env.local
+.env.*.local
+*.log
+logs/
+.pids/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 数据库 (生产环境应该使用 volume 持久化)
+*.db
+*.sqlite
+*.sqlite3
+
+# 上传文件 (使用 volume 挂载)
+uploads/*
+!uploads/.gitkeep
+
+# 其他
+*.tmp
+*.bak
+*.cache

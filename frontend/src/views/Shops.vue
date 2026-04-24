@@ -34,9 +34,10 @@
     <el-card class="table-card">
       <el-table :data="tableData" border v-loading="loading">
         <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="user_id" label="用户 ID" width="100" />
-        <el-table-column prop="region_id" label="区域 ID" width="100" />
-        <el-table-column prop="referrer_id" label="推荐店铺 ID" width="120" />
+        <el-table-column prop="name" label="店铺名称" width="150" />
+        <el-table-column prop="username" label="用户" width="120" />
+        <el-table-column prop="region_name" label="区域" width="120" />
+        <el-table-column prop="agent_name" label="绑定区代" width="120" />
         <el-table-column prop="status" label="状态" width="100">
           <template #default="{ row }">
             <el-tag :type="row.status === 'active' ? 'success' : 'danger'">
@@ -68,14 +69,42 @@
     <!-- 新增/编辑对话框 -->
     <el-dialog v-model="dialogVisible" :title="dialogTitle" width="500px">
       <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
-        <el-form-item label="用户 ID" prop="user_id">
-          <el-input-number v-model="form.user_id" :min="1" placeholder="请输入用户 ID" style="width: 100%" />
+        <el-form-item label="店铺名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入店铺名称（可选）" style="width: 100%" />
         </el-form-item>
-        <el-form-item label="区域 ID" prop="region_id">
-          <el-input-number v-model="form.region_id" :min="1" placeholder="请输入区域 ID" style="width: 100%" />
+        <el-form-item label="用户" prop="user_id">
+          <el-select v-model="form.user_id" placeholder="请选择用户" filterable style="width: 100%">
+            <el-option v-for="user in users" :key="user.id" :label="user.username" :value="user.id" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="推荐店铺 ID" prop="referrer_id">
-          <el-input-number v-model="form.referrer_id" :min="1" placeholder="请输入推荐店铺 ID（可选）" style="width: 100%" />
+        <el-form-item label="区域" prop="region_id">
+          <el-select v-model="form.region_id" placeholder="请选择区域" filterable style="width: 100%">
+            <el-option v-for="region in regions" :key="region.id" :label="region.name" :value="region.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="绑定区代" prop="agent_id">
+          <el-select v-model="form.agent_id" placeholder="请选择绑定区代（可选）" filterable clearable style="width: 100%">
+            <el-option v-for="agent in agents" :key="agent.id" :label="agent.name || `区代${agent.id}`" :value="agent.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="店铺坐标">
+          <div style="display: flex; gap: 8px; align-items: center; width: 100%">
+            <el-input
+              v-model="form.latitude"
+              placeholder="纬度"
+              style="width: 45%"
+              :readonly="true"
+              @click="openMapPicker"
+            />
+            <el-input
+              v-model="form.longitude"
+              placeholder="经度"
+              style="width: 45%"
+              :readonly="true"
+              @click="openMapPicker"
+            />
+            <el-button type="primary" @click="openMapPicker">选点</el-button>
+          </div>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -83,20 +112,36 @@
         <el-button type="primary" @click="handleSubmit" :loading="submitting">确定</el-button>
       </template>
     </el-dialog>
+
+    <!-- 地图选点弹窗 -->
+    <el-dialog v-model="mapDialogVisible" title="选择店铺位置" width="800px">
+      <div id="map-container" style="width: 100%; height: 400px;"></div>
+      <div style="margin-top: 16px; text-align: center;">
+        <el-button type="primary" @click="confirmMapSelection">确认选择</el-button>
+        <el-button @click="mapDialogVisible = false">取消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import apiClient from '@/api'
+import AMapLoader from '@amap/amap-jsapi-loader'
 
 interface Shop {
   id: number
+  name: string | null
   user_id: number
+  username?: string
   region_id: number
-  referrer_id: number | null
+  region_name?: string
+  agent_id: number | null
+  agent_name?: string
   status: string
+  latitude?: number | null
+  longitude?: number | null
 }
 
 interface Region {
@@ -104,9 +149,21 @@ interface Region {
   name: string
 }
 
+interface User {
+  id: number
+  username: string
+}
+
+interface Agent {
+  id: number
+  name: string | null
+}
+
 const loading = ref(false)
 const tableData = ref<Shop[]>([])
 const regions = ref<Region[]>([])
+const users = ref<User[]>([])
+const agents = ref<Agent[]>([])
 const dialogVisible = ref(false)
 const dialogTitle = ref('新增店铺')
 const submitting = ref(false)
@@ -125,10 +182,17 @@ const pagination = reactive({
 
 const form = reactive({
   id: null as number | null,
-  user_id: 0,
-  region_id: 0,
-  referrer_id: null as number | null,
+  name: '',
+  user_id: null as number | null,
+  region_id: null as number | null,
+  agent_id: null as number | null,
+  latitude: null as number | null,
+  longitude: null as number | null,
 })
+
+const mapDialogVisible = ref(false)
+const map = ref<any>(null)
+const marker = ref<any>(null)
 
 const rules = {
   user_id: [{ required: true, message: '请输入用户 ID', trigger: 'blur' }],
@@ -175,22 +239,103 @@ const fetchRegions = async () => {
   }
 }
 
+const fetchUsers = async () => {
+  try {
+    const response = await apiClient.get('/users', { params: { page: 1, page_size: 100 } })
+    users.value = response.data.items.map((item: any) => ({
+      id: item.id,
+      username: item.username,
+    }))
+  } catch (error: any) {
+    console.error('加载用户失败', error)
+  }
+}
+
+const fetchAgentsList = async () => {
+  try {
+    const response = await apiClient.get('/agents', { params: { page: 1, page_size: 100 } })
+    agents.value = response.data.items
+  } catch (error: any) {
+    console.error('加载区代列表失败', error)
+  }
+}
+
 const handleAdd = () => {
   dialogTitle.value = '新增店铺'
   form.id = null
-  form.user_id = 0
-  form.region_id = 0
-  form.referrer_id = null
+  form.name = ''
+  form.user_id = null
+  form.region_id = null
+  form.agent_id = null
   dialogVisible.value = true
 }
 
 const handleEdit = (row: Shop) => {
   dialogTitle.value = '编辑店铺'
   form.id = row.id
+  form.name = row.name || ''
   form.user_id = row.user_id
   form.region_id = row.region_id
-  form.referrer_id = row.referrer_id
+  form.agent_id = row.agent_id
+  form.latitude = row.latitude
+  form.longitude = row.longitude
   dialogVisible.value = true
+}
+
+// 打开地图选点
+const openMapPicker = async () => {
+  mapDialogVisible.value = true
+  await nextTick()
+
+  // 加载高德地图
+  window._AMapSecurityConfig = {
+    securityJsCode: 'a4ffb9efc6af3053bd6ca94633d2fa40',
+  }
+
+  const AMap = await AMapLoader.load({
+    key: 'aa44b61446e611d6aa60fdd137973e31',
+    version: '2.0',
+    plugins: ['AMap.Map', 'AMap.Marker'],
+  })
+
+  // 初始化地图
+  map.value = new AMap.Map('map-container', {
+    zoom: 11,
+    center: form.latitude && form.longitude ? [form.longitude, form.latitude] : [114.026, 30.593], // 默认武汉
+  })
+
+  // 创建标记
+  if (form.latitude && form.longitude) {
+    marker.value = new AMap.Marker({
+      position: [form.longitude, form.latitude],
+      map: map.value,
+      draggable: true,
+    })
+  } else {
+    marker.value = new AMap.Marker({
+      position: [114.026, 30.593],
+      map: map.value,
+      draggable: true,
+    })
+  }
+
+  // 点击地图更新标记位置
+  map.value.on('click', (e: any) => {
+    const lnglat = e.lnglat
+    marker.value.setPosition(lnglat)
+    form.longitude = lnglat.lng
+    form.latitude = lnglat.lat
+  })
+}
+
+// 确认地图选择
+const confirmMapSelection = () => {
+  if (marker.value) {
+    const position = marker.value.getPosition()
+    form.longitude = position.lng
+    form.latitude = position.lat
+  }
+  mapDialogVisible.value = false
 }
 
 const handleDelete = async (row: Shop) => {
@@ -212,16 +357,25 @@ const handleSubmit = async () => {
 
   try {
     if (form.id) {
-      await apiClient.put(`/shops/${form.id}`, {
+      const updateData: Record<string, any> = {
+        name: form.name || undefined,
+        user_id: form.user_id || undefined,
         region_id: form.region_id || undefined,
+        agent_id: form.agent_id || undefined,
         status: 'active',
-      })
+        latitude: form.latitude || undefined,
+        longitude: form.longitude || undefined,
+      }
+      await apiClient.put(`/shops/${form.id}`, updateData)
       ElMessage.success('更新成功')
     } else {
       await apiClient.post('/shops', {
         user_id: form.user_id,
         region_id: form.region_id,
-        referrer_id: form.referrer_id || undefined,
+        name: form.name || undefined,
+        agent_id: form.agent_id || undefined,
+        latitude: form.latitude || undefined,
+        longitude: form.longitude || undefined,
       })
       ElMessage.success('创建成功')
     }
@@ -236,6 +390,8 @@ const handleSubmit = async () => {
 
 onMounted(() => {
   fetchRegions()
+  fetchUsers()
+  fetchAgentsList()
   fetchShops()
 })
 </script>

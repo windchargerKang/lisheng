@@ -23,7 +23,10 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // 登录接口的 401 不跳转，让调用方处理错误提示
+    const isLoginRequest = error.config?.url?.includes('/auth/login')
+
+    if (error.response?.status === 401 && !isLoginRequest) {
       localStorage.removeItem('token')
       window.location.href = '/login'
     }

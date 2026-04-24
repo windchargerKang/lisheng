@@ -47,6 +47,7 @@
           <el-tree-select
             v-model="form.parent_id"
             :data="treeOptions"
+            :props="{ value: 'id', label: 'name', children: 'children' }"
             placeholder="选择父级区域（可选）"
             clearable
             check-strictly
@@ -150,7 +151,7 @@ const handleSubmit = async () => {
       // 编辑
       await apiClient.put(`/regions/${form.id}`, {
         name: form.name,
-        level: form.parent_id ? null : 1,
+        parent_id: form.parent_id,
       })
       ElMessage.success('更新成功')
     } else {

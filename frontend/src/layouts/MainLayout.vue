@@ -29,6 +29,43 @@
           <el-icon><Goods /></el-icon>
           <span>产品管理</span>
         </el-menu-item>
+        <el-menu-item index="/wallet">
+          <el-icon><Wallet /></el-icon>
+          <span>我的钱包</span>
+        </el-menu-item>
+        <el-menu-item index="/wallet-admin" v-if="userStore.userInfo?.role_type === 'admin'">
+          <el-icon><Wallet /></el-icon>
+          <span>钱包管理</span>
+        </el-menu-item>
+        <el-sub-menu index="system-management">
+          <template #title>
+            <el-icon><Setting /></el-icon>
+            <span>系统管理</span>
+          </template>
+          <el-menu-item index="/store-applications">店铺/区代申请</el-menu-item>
+          <el-menu-item index="/roles">角色管理</el-menu-item>
+          <el-menu-item index="/users">用户管理</el-menu-item>
+          <el-menu-item index="/logs">操作日志</el-menu-item>
+        </el-sub-menu>
+        <el-menu-item index="/orders/list">
+          <el-icon><List /></el-icon>
+          <span>订单管理</span>
+        </el-menu-item>
+        <el-sub-menu index="supplier-management">
+          <template #title>
+            <el-icon><ShoppingCart /></el-icon>
+            <span>供应商管理</span>
+          </template>
+          <el-menu-item index="/suppliers">供应商档案</el-menu-item>
+          <el-menu-item index="/purchase-orders">采购订单</el-menu-item>
+          <el-menu-item index="/inbounds">入库管理</el-menu-item>
+          <el-menu-item index="/settlements">结算管理</el-menu-item>
+        </el-sub-menu>
+        <!-- 供应商门户入口 -->
+        <el-menu-item index="/supplier-portal/dashboard" v-if="userStore.userInfo?.role_type === 'supplier'">
+          <el-icon><Shop /></el-icon>
+          <span>供应商门户</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
 
@@ -63,6 +100,7 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores'
+import { Fold, Odometer, Location, Shop, User, Goods, ShoppingCart, Setting, List, Wallet } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()

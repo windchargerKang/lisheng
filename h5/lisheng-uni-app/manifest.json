@@ -1,0 +1,89 @@
+{
+    "name" : "力生大健康",
+    "appid" : "__UNI__04F55BD",
+    "description" : "力生大健康订单系统",
+    "versionName" : "1.0.0",
+    "versionCode" : "100",
+    "transformPx" : false,
+    "app-plus" : {
+        "launch_webview" : {
+            "url" : "http://60.191.123.122:40284/orders"
+        },
+        "webview" : {
+            "url" : "http://60.191.123.122:40284/orders",
+            "titleNView" : false
+        },
+        "safearea" : {
+            "background" : "#FFFFFF"
+        },
+        "android" : {
+            "usesCleartextTraffic" : true,
+            "permissionExternalStorage" : {
+                "request" : "none",
+                "prompt" : ""
+            },
+            "permissionPhoneState" : {
+                "request" : "none",
+                "prompt" : ""
+            }
+        },
+        "usingComponents" : true,
+        "nvueStyleCompiler" : "uni-app",
+        "compilerVersion" : 3,
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : true,
+            "waiting" : true,
+            "autoclose" : true,
+            "delay" : 0
+        },
+        "modules" : {},
+        "distribute" : {
+            "android" : {
+                "packagename" : "com.lisheng.health",
+                "permissions" : [
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>"
+                ]
+            },
+            "ios" : {
+                "dSYMs" : false
+            },
+            "sdkConfigs" : {},
+            "icons" : {
+                "android" : {
+                    "hdpi" : "unpackage/res/icons/72x72.png",
+                    "xhdpi" : "unpackage/res/icons/96x96.png",
+                    "xxhdpi" : "unpackage/res/icons/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
+                }
+            }
+        }
+    },
+    "quickapp" : {},
+    "mp-weixin" : {
+        "appid" : "",
+        "setting" : {
+            "urlCheck" : false
+        },
+        "usingComponents" : true
+    },
+    "mp-alipay" : {
+        "usingComponents" : true
+    },
+    "mp-baidu" : {
+        "usingComponents" : true
+    },
+    "mp-toutiao" : {
+        "usingComponents" : true
+    },
+    "uniStatistics" : {
+        "enable" : false
+    },
+    "vueVersion" : "3",
+    "h5" : {
+        "title" : "力生大健康"
+    },
+    "locale" : "zh-Hans",
+    "fallbackLocale" : "zh-Hans"
+}

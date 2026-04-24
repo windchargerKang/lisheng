@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>移动端购物全流程 - 视觉辅助</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; }
+    h1 { text-align: center; color: #333; margin-bottom: 30px; }
+    h2 { color: #1989fa; margin: 20px 0 15px; border-bottom: 2px solid #1989fa; padding-bottom: 8px; }
+
+    .section { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+    /* 流程图 */
+    .flow-diagram { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; padding: 20px; }
+    .flow-node { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 8px; text-align: center; min-width: 100px; font-weight: 500; }
+    .flow-node.primary { background: linear-gradient(135deg, #1989fa 0%, #0066cc 100%); }
+    .flow-node.success { background: linear-gradient(135deg, #07c160 0%, #00964a 100%); }
+    .flow-arrow { color: #999; font-size: 20px; }
+
+    /* 手机线框图 */
+    .phone-mockup { border: 3px solid #333; border-radius: 20px; overflow: hidden; width: 320px; margin: 0 auto; background: white; }
+    .phone-header { background: #1989fa; color: white; padding: 10px 15px; font-size: 14px; display: flex; align-items: center; }
+    .phone-header .back { margin-right: 10px; font-size: 18px; }
+    .phone-content { padding: 15px; min-height: 400px; }
+
+    /* 首页线框 */
+    .home-search { background: #f5f5f5; border-radius: 20px; padding: 8px 15px; margin-bottom: 15px; color: #999; font-size: 13px; }
+    .home-banner { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 120px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; margin-bottom: 15px; }
+    .home-nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+    .home-nav-item { text-align: center; font-size: 12px; color: #666; }
+    .home-nav-icon { width: 40px; height: 40px; background: #f0f0f0; border-radius: 10px; margin: 0 auto 5px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 15px; font-weight: 600; }
+    .section-title .more { font-size: 12px; color: #999; }
+    .product-card { border: 1px solid #eee; border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+    .product-image { width: 100%; height: 120px; background: #f9f9f9; border-radius: 6px; margin-bottom: 8px; }
+    .product-name { font-size: 14px; color: #333; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .product-price { color: #f44; font-size: 16px; font-weight: bold; }
+
+    /* 产品详情线框 */
+    .detail-image { width: 100%; height: 250px; background: #f9f9f9; }
+    .detail-info { padding: 15px; }
+    .detail-name { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .detail-desc { font-size: 13px; color: #999; margin-bottom: 15px; }
+    .detail-price { display: flex; align-items: baseline; margin-bottom: 15px; }
+    .detail-price .currency { font-size: 14px; color: #f44; }
+    .detail-price .amount { font-size: 24px; color: #f44; font-weight: bold; margin-left: 4px; }
+    .detail-price .label { font-size: 12px; color: #999; margin-left: 10px; }
+    .price-tiers { border: 1px solid #eee; border-radius: 8px; overflow: hidden; margin-bottom: 15px; }
+    .price-tier { display: flex; justify-content: space-between; padding: 10px 15px; border-bottom: 1px solid #eee; font-size: 13px; }
+    .price-tier:last-child { border-bottom: none; }
+    .price-tier.active { background: #e8f3ff; color: #1989fa; }
+    .detail-stock { font-size: 13px; color: #999; display: flex; align-items: center; gap: 5px; }
+    .submit-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 50px; background: white; border-top: 1px solid #eee; display: flex; align-items: center; padding: 0 15px; }
+    .submit-bar .btn { margin-left: auto; background: #1989fa; color: white; border: none; padding: 10px 25px; border-radius: 20px; font-size: 14px; }
+
+    /* 购物车线框 */
+    .cart-item { display: flex; gap: 10px; padding: 10px; border-bottom: 1px solid #eee; }
+    .cart-image { width: 80px; height: 80px; background: #f9f9f9; border-radius: 6px; flex-shrink: 0; }
+    .cart-info { flex: 1; }
+    .cart-name { font-size: 14px; color: #333; margin-bottom: 5px; }
+    .cart-price { color: #f44; font-size: 15px; font-weight: bold; }
+    .cart-qty { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+    .cart-stepper { width: 90px; height: 28px; border: 1px solid #eee; border-radius: 4px; display: flex; }
+    .cart-stepper button { width: 28px; border: none; background: #f9f9f9; font-size: 16px; }
+    .cart-stepper input { flex: 1; border: none; text-align: center; font-size: 13px; }
+    .cart-submit { position: fixed; bottom: 0; left: 0; right: 0; height: 50px; background: white; border-top: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; }
+    .cart-submit .total { font-size: 14px; }
+    .cart-submit .total span { color: #f44; font-size: 18px; font-weight: bold; }
+    .cart-submit .btn { background: #1989fa; color: white; border: none; padding: 10px 25px; border-radius: 20px; font-size: 14px; }
+
+    /* 订单确认线框 */
+    .order-address { background: #f9f9f9; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+    .order-address-row { display: flex; justify-content: space-between; font-size: 14px; }
+    .order-address-row .name { font-weight: 600; }
+    .order-address-row .phone { color: #666; }
+    .order-items { border-top: 1px solid #eee; }
+    .order-item-row { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
+    .order-item-image { width: 60px; height: 60px; background: #f9f9f9; border-radius: 4px; }
+    .order-item-info { flex: 1; font-size: 13px; }
+    .order-item-name { color: #333; margin-bottom: 5px; }
+    .order-item-price { color: #f44; font-size: 14px; }
+    .order-summary { padding: 15px; background: #f9f9f9; }
+    .order-summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+    .order-summary-row.total { font-weight: 600; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px; }
+    .order-submit { position: fixed; bottom: 0; left: 0; right: 0; height: 50px; background: white; border-top: 1px solid #eee; display: flex; align-items: center; justify-content: flex-end; padding: 0 15px; }
+    .order-submit .amount { font-size: 18px; color: #f44; font-weight: bold; margin-right: 15px; }
+    .order-submit .btn { background: #1989fa; color: white; border: none; padding: 10px 25px; border-radius: 20px; font-size: 14px; }
+
+    /* 支付成功线框 */
+    .success-icon { width: 80px; height: 80px; background: #07c160; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 30px auto; font-size: 50px; color: white; }
+    .success-title { text-align: center; font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+    .success-amount { text-align: center; font-size: 24px; color: #f44; font-weight: bold; margin-bottom: 20px; }
+    .success-status { text-align: center; font-size: 14px; color: #999; margin-bottom: 30px; }
+    .success-btns { display: flex; gap: 10px; padding: 0 15px; }
+    .success-btns .btn { flex: 1; padding: 12px; border-radius: 8px; text-align: center; font-size: 14px; text-decoration: none; }
+    .success-btns .btn-primary { background: #1989fa; color: white; }
+    .success-btns .btn-default { background: #f5f5f5; color: #333; }
+
+    /* 图例 */
+    .legend { display: flex; gap: 20px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #666; }
+    .legend-color { width: 20px; height: 20px; border-radius: 4px; }
+    .legend-color.existing { background: #e8f3ff; border: 2px solid #1989fa; }
+    .legend-color.new { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .legend-color.data { background: linear-gradient(135deg, #07c160 0%, #00964a 100%); }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #eee; font-size: 13px; }
+    th { background: #f9f9f9; font-weight: 600; }
+    .status-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+    .status-badge.done { background: #e6f7e6; color: #07c160; }
+    .status-badge.todo { background: #fff3e6; color: #ff8800; }
+    .status-badge.partial { background: #e8f3ff; color: #1989fa; }
+  </style>
+</head>
+<body>
+  <h1>🛒 移动端购物全流程打通 - 视觉辅助</h1>
+
+  <!-- 第一部分：流程图 -->
+  <div class="section">
+    <h2>1. 用户购物流程图</h2>
+    <div class="flow-diagram">
+      <div class="flow-node">首页</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node primary">产品列表</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node primary">产品详情</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node success">加入购物车</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">购物车</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node primary">结算确认</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node success">模拟支付</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node success">订单生成</div>
+    </div>
+
+    <h3 style="margin-top: 20px; color: #666;">功能状态</h3>
+    <table>
+      <tr><th>页面/功能</th><th>当前状态</th><th>本次任务</th></tr>
+      <tr><td>首页 (Home.vue)</td><td><span class="status-badge partial">部分完成</span></td><td>添加推荐产品列表</td></tr>
+      <tr><td>产品列表 (Products.vue)</td><td><span class="status-badge done">已完成</span></td><td>无</td></tr>
+      <tr><td>产品详情 (ProductDetail.vue)</td><td><span class="status-badge done">已完成</span></td><td>无</td></tr>
+      <tr><td>购物车 (Cart.vue)</td><td><span class="status-badge done">已完成</span></td><td>无</td></tr>
+      <tr><td>结算确认</td><td><span class="status-badge todo">待开发</span></td><td>新增结算页面</td></tr>
+      <tr><td>模拟支付</td><td><span class="status-badge todo">待开发</span></td><td>新增支付 API 和弹窗</td></tr>
+      <tr><td>订单生成</td><td><span class="status-badge partial">部分完成</span></td><td>确保流程打通</td></tr>
+    </table>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-color existing"></div> 已有功能</div>
+      <div class="legend-item"><div class="legend-color new"></div> 本次新增</div>
+      <div class="legend-item"><div class="legend-color data"></div> 后端 API</div>
+    </div>
+  </div>
+
+  <!-- 第二部分：首页线框图 -->
+  <div class="section">
+    <h2>2. 首页 - 推荐产品列表</h2>
+    <div class="phone-mockup">
+      <div class="phone-header">
+        <span>渠道销售管理系统</span>
+      </div>
+      <div class="phone-content" style="padding-bottom: 0;">
+        <div class="home-search">🔍 搜索商品</div>
+        <div class="home-banner">欢迎选购</div>
+        <div class="home-nav">
+          <div class="home-nav-item"><div class="home-nav-icon">📦</div>全部商品</div>
+          <div class="home-nav-item"><div class="home-nav-icon">🔥</div>热销榜</div>
+          <div class="home-nav-item"><div class="home-nav-icon">✨</div>新品</div>
+          <div class="home-nav-item"><div class="home-nav-icon">🎁</div>优惠券</div>
+        </div>
+        <div class="section-title">
+          <span>推荐产品</span>
+          <span class="more">查看全部 ></span>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-name">药包 - 传统配方</div>
+          <div class="product-price">¥90.00</div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-name">喷剂 1 - 外用喷剂</div>
+          <div class="product-price">¥180.00</div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-name">喷剂 2 - 升级版</div>
+          <div class="product-price">¥180.00</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 20px;">实现要点</h3>
+    <table>
+      <tr><th>项目</th><th>说明</th></tr>
+      <tr><td>数据源</td><td>GET /api/v1/products?page=1&page_size=10</td></tr>
+      <tr><td>推荐逻辑</td><td>按 is_new 标记或销量排序</td></tr>
+      <tr><td>价格展示</td><td>根据用户角色显示对应价格</td></tr>
+      <tr><td>点击跳转</td><td>跳转到 /products/:id 详情页</td></tr>
+    </table>
+  </div>
+
+  <!-- 第三部分：产品详情页 -->
+  <div class="section">
+    <h2>3. 产品详情页 - 加入购物车</h2>
+    <div class="phone-mockup">
+      <div class="phone-header">
+        <span class="back">←</span>
+        <span>商品详情</span>
+      </div>
+      <div class="phone-content" style="padding: 0;">
+        <div class="detail-image"></div>
+        <div class="detail-info">
+          <div class="detail-name">药包 - 传统配方</div>
+          <div class="detail-desc">力生服务核心产品，传统配方</div>
+          <div class="detail-price">
+            <span class="currency">¥</span>
+            <span class="amount">90.00</span>
+            <span class="label">零售价</span>
+          </div>
+          <div class="price-tiers">
+            <div class="price-tier">零售价 <span>¥90.00</span></div>
+            <div class="price-tier active">店铺价 <span>¥60.00</span></div>
+            <div class="price-tier">区代价 <span>¥50.00</span></div>
+          </div>
+          <div class="detail-stock">📦 库存 150 件</div>
+        </div>
+      </div>
+      <div class="submit-bar">
+        <button class="btn">加入购物车</button>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 20px;">实现要点</h3>
+    <table>
+      <tr><th>项目</th><th>说明</th></tr>
+      <tr><td>当前状态</td><td><span class="status-badge done">已完成</span> - ProductDetail.vue 已有加入购物车功能</td></tr>
+      <tr><td>API</td><td>POST /api/v1/cart/items { product_id, quantity }</td></tr>
+      <tr><td>价格展示</td><td>三级价格已实现，根据用户角色高亮对应价格</td></tr>
+    </table>
+  </div>
+
+  <!-- 第四部分：购物车 -->
+  <div class="section">
+    <h2>4. 购物车 - 结算</h2>
+    <div class="phone-mockup">
+      <div class="phone-header">
+        <span class="back">←</span>
+        <span>购物车</span>
+      </div>
+      <div class="phone-content" style="padding: 0;">
+        <div class="cart-item">
+          <div class="cart-image"></div>
+          <div class="cart-info">
+            <div class="cart-name">药包 - 传统配方</div>
+            <div class="cart-price">¥90.00</div>
+            <div class="cart-qty">
+              <span>数量</span>
+              <div class="cart-stepper">
+                <button>-</button>
+                <input value="2" />
+                <button>+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cart-item">
+          <div class="cart-image"></div>
+          <div class="cart-info">
+            <div class="cart-name">喷剂 1 - 外用喷剂</div>
+            <div class="cart-price">¥180.00</div>
+            <div class="cart-qty">
+              <span>数量</span>
+              <div class="cart-stepper">
+                <button>-</button>
+                <input value="1" />
+                <button>+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cart-submit">
+        <div class="total">合计：<span>¥360.00</span></div>
+        <button class="btn">结算</button>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 20px;">实现要点</h3>
+    <table>
+      <tr><th>项目</th><th>说明</th></tr>
+      <tr><td>当前状态</td><td><span class="status-badge done">已完成</span> - Cart.vue 已有完整功能</td></tr>
+      <tr><td>获取购物车</td><td>GET /api/v1/cart/items</td></tr>
+      <tr><td>更新数量</td><td>PUT /api/v1/cart/items/:id { quantity }</td></tr>
+      <tr><td>删除商品</td><td>DELETE /api/v1/cart/items/:id</td></tr>
+      <tr><td>结算</td><td>POST /api/v1/orders { cart_item_ids: [...] }</td></tr>
+    </table>
+  </div>
+
+  <!-- 第五部分：结算确认页 -->
+  <div class="section">
+    <h2>5. 结算确认页（待开发）</h2>
+    <div class="phone-mockup">
+      <div class="phone-header">
+        <span class="back">←</span>
+        <span>确认订单</span>
+      </div>
+      <div class="phone-content" style="padding: 0;">
+        <div class="order-address">
+          <div class="order-address-row">
+            <span class="name">张三 138****1234</span>
+            <span>修改 ></span>
+          </div>
+          <div style="margin-top: 5px; color: #999; font-size: 13px;">河南省郑州市金水区 XX 街道 XX 号</div>
+        </div>
+        <div style="padding: 10px 15px; font-weight: 600;">商品信息</div>
+        <div class="order-items">
+          <div class="order-item-row">
+            <div class="order-item-image"></div>
+            <div class="order-item-info">
+              <div class="order-item-name">药包 - 传统配方</div>
+              <div>¥90.00 × 2</div>
+            </div>
+          </div>
+          <div class="order-item-row">
+            <div class="order-item-image"></div>
+            <div class="order-item-info">
+              <div class="order-item-name">喷剂 1 - 外用喷剂</div>
+              <div>¥180.00 × 1</div>
+            </div>
+          </div>
+        </div>
+        <div class="order-summary">
+          <div class="order-summary-row">
+            <span>商品总额</span>
+            <span>¥360.00</span>
+          </div>
+          <div class="order-summary-row">
+            <span>运费</span>
+            <span>¥0.00</span>
+          </div>
+          <div class="order-summary-row total">
+            <span>实付款</span>
+            <span style="color: #f44;">¥360.00</span>
+          </div>
+        </div>
+      </div>
+      <div class="order-submit">
+        <span style="font-size: 14px; color: #999;">提交即同意</span>
+        <span class="amount">¥360.00</span>
+        <button class="btn">提交订单</button>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 20px;">实现要点</h3>
+    <table>
+      <tr><th>项目</th><th>说明</th></tr>
+      <tr><td>新建文件</td><td>h5/src/views/Checkout.vue</td></tr>
+      <tr><td>路由</td><td>/checkout</td></tr>
+      <tr><td>数据来源</td><td>从购物车传入的 cart_item_ids 获取商品明细</td></tr>
+      <tr><td>地址选择</td><td>简化版：显示用户默认地址或提示添加</td></tr>
+      <tr><td>提交订单</td><td>POST /api/v1/orders { cart_item_ids, address?, remark? }</td></tr>
+    </table>
+  </div>
+
+  <!-- 第六部分：支付成功页 -->
+  <div class="section">
+    <h2>6. 支付成功页（待开发）</h2>
+    <div class="phone-mockup">
+      <div class="phone-header">
+        <span class="back">←</span>
+        <span>支付结果</span>
+      </div>
+      <div class="phone-content">
+        <div class="success-icon">✓</div>
+        <div class="success-title">支付成功</div>
+        <div class="success-amount">¥360.00</div>
+        <div class="success-status">订单已确认，正在配货中</div>
+        <div class="success-btns">
+          <a class="btn btn-default" href="/orders">查看订单</a>
+          <a class="btn btn-primary" href="/home">返回首页</a>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 20px;">实现要点</h3>
+    <table>
+      <tr><th>项目</th><th>说明</th></tr>
+      <tr><td>新建文件</td><td>h5/src/views/PaymentSuccess.vue</td></tr>
+      <tr><td>路由</td><td>/payment/success?order_id=xxx</td></tr>
+      <tr><td>模拟支付</td><td>前端弹窗选择支付方式 → 调用支付 API → 跳转成功页</td></tr>
+      <tr><td>支付 API</td><td>POST /api/v1/orders/:id/pay { payment_method, transaction_id? }</td></tr>
+    </table>
+  </div>
+
+  <!-- 第七部分：后端 API -->
+  <div class="section">
+    <h2>7. 后端 API 需求</h2>
+    <table>
+      <tr><th>方法</th><th>路径</th><th>说明</th><th>状态</th></tr>
+      <tr><td>GET</td><td>/api/v1/products</td><td>获取产品列表</td><td><span class="status-badge done">已有</span></td></tr>
+      <tr><td>GET</td><td>/api/v1/products/:id</td><td>获取产品详情</td><td><span class="status-badge done">已有</span></td></tr>
+      <tr><td>GET</td><td>/api/v1/cart/items</td><td>获取购物车列表</td><td><span class="status-badge done">已有</span></td></tr>
+      <tr><td>POST</td><td>/api/v1/cart/items</td><td>添加到购物车</td><td><span class="status-badge done">已有</span></td></tr>
+      <tr><td>PUT</td><td>/api/v1/cart/items/:id</td><td>更新购物车商品数量</td><td><span class="status-badge done">已有</span></td></tr>
+      <tr><td>DELETE</td><td>/api/v1/cart/items/:id</td><td>删除购物车商品</td><td><span class="status-badge done">已有</span></td></tr>
+      <tr><td>POST</td><td>/api/v1/orders</td><td>创建订单</td><td><span class="status-badge done">已有</span></td></tr>
+      <tr><td>GET</td><td>/api/v1/orders</td><td>获取订单列表</td><td><span class="status-badge done">已有</span></td></tr>
+      <tr><td>GET</td><td>/api/v1/orders/:id</td><td>获取订单详情</td><td><span class="status-badge done">已有</span></td></tr>
+      <tr><td>POST</td><td>/api/v1/orders/:id/pay</td><td>订单支付（模拟）</td><td><span class="status-badge todo">待开发</span></td></tr>
+    </table>
+  </div>
+
+  <!-- 第八部分：开发优先级 -->
+  <div class="section">
+    <h2>8. 开发优先级建议</h2>
+    <table>
+      <tr><th>优先级</th><th>任务</th><th>预估工作量</th><th>依赖</th></tr>
+      <tr><td>P0</td><td>首页推荐产品列表</td><td>2-3 小时</td><td>无</td></tr>
+      <tr><td>P0</td><td>结算确认页面</td><td>3-4 小时</td><td>购物车</td></tr>
+      <tr><td>P0</td><td>模拟支付 API + 前端</td><td>2-3 小时</td><td>订单创建</td></tr>
+      <tr><td>P1</td><td>支付成功页面</td><td>1 小时</td><td>支付 API</td></tr>
+      <tr><td>P2</td><td>首页 Banner 动态配置</td><td>1-2 小时</td><td>无</td></tr>
+    </table>
+  </div>
+</body>
+</html>

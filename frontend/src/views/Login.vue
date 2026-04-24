@@ -62,7 +62,13 @@ const handleLogin = async () => {
     userStore.setUserInfo(result.user)
 
     ElMessage.success('登录成功')
-    router.push('/')
+
+    // 根据角色跳转到不同首页
+    if (result.user.role_type === 'supplier') {
+      router.push('/supplier-portal/dashboard')
+    } else {
+      router.push('/dashboard')
+    }
   } catch (error: any) {
     ElMessage.error(error.response?.data?.detail || '登录失败')
   } finally {

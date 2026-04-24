@@ -5,7 +5,8 @@ from fastapi import APIRouter, HTTPException, Depends, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
-from typing import List
+from typing import List, Optional
+from pydantic import BaseModel
 
 from app.core.database import get_db
 from app.models.region import Region
@@ -15,19 +16,17 @@ from app.models.user import User
 router = APIRouter()
 
 
-class RegionCreateRequest:
+class RegionCreateRequest(BaseModel):
     """创建区域请求"""
-    def __init__(self, name: str, parent_id: int = None, level: int = 1):
-        self.name = name
-        self.parent_id = parent_id
-        self.level = level
+    name: str
+    parent_id: Optional[int] = None
+    level: int = 1
 
 
-class RegionUpdateRequest:
+class RegionUpdateRequest(BaseModel):
     """更新区域请求"""
-    def __init__(self, name: str = None, level: int = None):
-        self.name = name
-        self.level = level
+    name: Optional[str] = None
+    parent_id: Optional[int] = None
 
 
 def build_region_tree(regions: List[Region], parent_id: int = None) -> List[dict]:
@@ -132,13 +131,34 @@ async def update_region(
 
     if request.name:
         region.name = request.name
-    if request.level:
-        region.level = request.level
+
+    # 处理 parent_id 变更
+    if request.parent_id is not None and request.parent_id != region.parent_id:
+        # 验证父区域是否存在
+        if request.parent_id:
+            parent_result = await db.execute(select(Region).where(Region.id == request.parent_id))
+            parent = parent_result.scalar_one_or_none()
+            if not parent:
+                raise HTTPException(status_code=400, detail="父区域不存在")
+
+            # 不能将自己设为子区域
+            if request.parent_id == region_id:
+                raise HTTPException(status_code=400, detail="不能将自己设为父区域")
+
+            # 构建新路径
+            region.path = f"{parent.path}/{region_id}"
+            region.level = parent.level + 1
+        else:
+            # 变为顶级区域
+            region.path = str(region.level)
+            region.level = 1
+
+        region.parent_id = request.parent_id
 
     await db.commit()
     await db.refresh(region)
 
-    return {"id": region.id, "name": region.name, "level": region.level}
+    return {"id": region.id, "name": region.name, "level": region.level, "path": region.path, "parent_id": region.parent_id}
 
 
 @router.delete("/{region_id}")

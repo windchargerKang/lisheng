@@ -25,3 +25,6 @@ httpx==0.26.0
 
 # 开发工具
 python-dotenv==1.0.0
+
+# HTML 过滤（XSS 防护）
+bleach==6.1.0
