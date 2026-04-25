@@ -4,11 +4,8 @@ npm warn Unknown user config "home". This will stop working in the next major ve
 > vite
 
 
-  VITE v5.4.21  ready in 267 ms
+  VITE v5.4.21  ready in 235 ms
 
   ➜  Local:   http://localhost:3000/
   ➜  Network: http://192.168.124.6:3000/
   ➜  Network: http://100.2.128.100:3000/
-10:40:30 PM [vite] hmr update /src/views/ProductDetail.vue?vue&type=style&index=0&scoped=95e08fb6&lang.css
-10:41:14 PM [vite] hmr update /src/views/ProductDetail.vue?vue&type=style&index=0&scoped=95e08fb6&lang.css
-11:02:09 PM [vite] page reload src/router/index.ts

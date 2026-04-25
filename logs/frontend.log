@@ -4,14 +4,8 @@ npm warn Unknown user config "home". This will stop working in the next major ve
 > vite
 
 
-  VITE v5.4.21  ready in 245 ms
+  VITE v5.4.21  ready in 244 ms
 
   ➜  Local:   http://localhost:5173/admin/
   ➜  Network: http://192.168.124.6:5173/admin/
   ➜  Network: http://100.2.128.100:5173/admin/
-11:03:44 PM [vite] vite.config.ts changed, restarting server...
-11:03:44 PM [vite] server restarted.
-
-  ➜  Local:   http://localhost:5173/
-  ➜  Network: http://192.168.124.6:5173/
-  ➜  Network: http://100.2.128.100:5173/

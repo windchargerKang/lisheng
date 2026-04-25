@@ -402,7 +402,7 @@ onMounted(() => {
 .order-detail-page {
   min-height: 100vh;
   background-color: #f5f5f5;
-  padding: 50px 0 80px;
+  padding: 50px 0 120px;
   position: relative;
 }
 
@@ -422,18 +422,16 @@ onMounted(() => {
 
 .action-buttons {
   position: fixed;
-  bottom: 0;
+  bottom: 50px;
   left: 0;
   right: 0;
   display: flex;
   justify-content: flex-end;
   padding: 10px 16px;
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
   background-color: #fff;
   border-top: 1px solid #eee;
   gap: 12px;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .status-info {
