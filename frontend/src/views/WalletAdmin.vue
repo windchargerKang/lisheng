@@ -104,8 +104,8 @@
         </el-table-column>
         <el-table-column prop="amount" label="金额" width="120">
           <template #default="{ row }">
-            <span :class="row.transaction_type === 'RECHARGE' ? 'text-success' : 'text-danger'">
-              {{ row.transaction_type === 'RECHARGE' ? '+' : '-' }}¥{{ row.amount }}
+            <span :class="getAmountClass(row)">
+              {{ getAmountSign(row) }}¥{{ Math.abs(row.amount) }}
             </span>
           </template>
         </el-table-column>
@@ -174,8 +174,8 @@ interface Wallet {
 interface Transaction {
   id: number
   wallet_id: number
-  transaction_type: 'RECHARGE' | 'WITHDRAW'
-  amount: string
+  transaction_type: 'RECHARGE' | 'WITHDRAW' | 'ORDER_PAYMENT' | 'SERVICE_FEE'
+  amount: number | string
   balance_after: string
   transaction_no: string
   status: 'PENDING' | 'COMPLETED' | 'REJECTED'
@@ -331,6 +331,18 @@ const handleApproveWithdraw = async (row: Transaction, approved: boolean) => {
       ElMessage.error(error.response?.data?.detail || '操作失败')
     }
   }
+}
+
+const getAmountClass = (row: Transaction) => {
+  // 根据金额正负判断颜色：正数为收入（绿色），负数为支出（红色）
+  const amount = typeof row.amount === 'number' ? row.amount : parseFloat(row.amount)
+  return amount >= 0 ? 'text-success' : 'text-danger'
+}
+
+const getAmountSign = (row: Transaction) => {
+  // 根据金额正负判断符号
+  const amount = typeof row.amount === 'number' ? row.amount : parseFloat(row.amount)
+  return amount >= 0 ? '+' : '-'
 }
 
 const getStatusType = (status: string) => {
