@@ -141,6 +141,36 @@
         <el-form-item label="区代价格">
           <el-input-number v-model="priceForm.agent" :min="0" :precision="2" :step="0.1" style="width: 100%" />
         </el-form-item>
+        <el-divider />
+        <el-form-item label="分润配置">
+          <div class="profit-rate-section">
+            <el-form-item label="服务费比例" label-width="100px">
+              <el-input-number
+                v-model="priceForm.service_fee_rate"
+                :min="0"
+                :max="100"
+                :precision="2"
+                :step="0.1"
+                :controls="true"
+                style="width: 150px"
+              />
+              <span class="unit">%</span>
+            </el-form-item>
+            <el-form-item label="区代利润比例" label-width="100px">
+              <el-input-number
+                v-model="priceForm.agent_profit_rate"
+                :min="0"
+                :max="100"
+                :precision="2"
+                :step="0.1"
+                :controls="true"
+                style="width: 150px"
+              />
+              <span class="unit">%</span>
+            </el-form-item>
+            <div class="form-tip">留空表示使用全局默认值（服务费 30%、区代利润 10%）</div>
+          </div>
+        </el-form-item>
       </el-form>
       <template #footer>
         <el-button @click="priceDialogVisible = false">取消</el-button>
@@ -170,6 +200,8 @@ interface Product {
   image?: string | null
   images?: string[]
   prices?: Price[]
+  service_fee_rate?: number | null
+  agent_profit_rate?: number | null
 }
 
 const loading = ref(false)
@@ -205,6 +237,8 @@ const priceForm = reactive({
   retail: 0,
   shop: 0,
   agent: 0,
+  service_fee_rate: null as number | null,
+  agent_profit_rate: null as number | null,
 })
 
 const productRules = {
@@ -283,6 +317,9 @@ const handleSetPrice = (row: Product) => {
     priceForm.shop = getPrice(row.prices, 'shop') || 0
     priceForm.agent = getPrice(row.prices, 'agent') || 0
   }
+  // 加载分润比例配置
+  priceForm.service_fee_rate = row.service_fee_rate ? parseFloat((row.service_fee_rate * 100).toFixed(2)) : null
+  priceForm.agent_profit_rate = row.agent_profit_rate ? parseFloat((row.agent_profit_rate * 100).toFixed(2)) : null
   priceDialogVisible.value = true
 }
 
@@ -457,12 +494,22 @@ const handlePriceSubmit = async () => {
   submitting.value = true
 
   try {
+    // 将百分比转换为小数（0.30 = 30%）
+    const serviceFeeRate = priceForm.service_fee_rate !== null && priceForm.service_fee_rate !== undefined
+      ? parseFloat((priceForm.service_fee_rate / 100).toFixed(4))
+      : null
+    const agentProfitRate = priceForm.agent_profit_rate !== null && priceForm.agent_profit_rate !== undefined
+      ? parseFloat((priceForm.agent_profit_rate / 100).toFixed(4))
+      : null
+
     await apiClient.post(`/products/${priceForm.product_id}/prices`, {
       prices: [
         { tier_type: 'retail', price: priceForm.retail },
         { tier_type: 'shop', price: priceForm.shop },
         { tier_type: 'agent', price: priceForm.agent },
       ],
+      service_fee_rate: serviceFeeRate,
+      agent_profit_rate: agentProfitRate,
     })
     ElMessage.success('价格设置成功')
     priceDialogVisible.value = false
@@ -538,6 +585,23 @@ onMounted(() => {
   font-size: 12px;
   color: #909399;
   margin-top: 4px;
+}
+
+.profit-rate-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.profit-rate-section .unit {
+  margin-left: 8px;
+  color: #909399;
+}
+
+.profit-rate-section .form-tip {
+  margin-top: 8px;
+  color: #909399;
 }
 
 :deep(.el-upload-list--picture-card) {

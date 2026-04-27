@@ -39,8 +39,8 @@
               :label="`${item.created_at?.slice(0, 16) || ''} · ${getStatusLabel(item.status)}`"
             >
               <template #right-side>
-                <div :class="['transaction-amount', item.transaction_type === 'RECHARGE' ? 'income' : 'expense']">
-                  {{ item.transaction_type === 'RECHARGE' ? '+' : '-' }}¥{{ item.amount }}
+                <div :class="['transaction-amount', getAmountClass(item)]">
+                  {{ getAmountSign(item) }}¥{{ Math.abs(parseFloat(item.amount)) }}
                 </div>
               </template>
             </van-cell>
@@ -149,8 +149,8 @@ interface Wallet {
 interface Transaction {
   id: number
   wallet_id: number
-  transaction_type: 'RECHARGE' | 'WITHDRAW'
-  amount: string
+  transaction_type: 'RECHARGE' | 'WITHDRAW' | 'ORDER_PAYMENT' | 'SERVICE_FEE'
+  amount: string | number
   balance_after: string
   transaction_no: string
   status: 'PENDING' | 'COMPLETED' | 'REJECTED'
@@ -346,6 +346,16 @@ const handleWithdraw = async () => {
     showFailToast(error.response?.data?.detail || '提现申请失败')
     return false
   }
+}
+
+const getAmountClass = (item: Transaction) => {
+  const amount = typeof item.amount === 'number' ? item.amount : parseFloat(item.amount)
+  return amount >= 0 ? 'income' : 'expense'
+}
+
+const getAmountSign = (item: Transaction) => {
+  const amount = typeof item.amount === 'number' ? item.amount : parseFloat(item.amount)
+  return amount >= 0 ? '+' : '-'
 }
 
 const getStatusLabel = (status: string) => {

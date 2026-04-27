@@ -59,6 +59,8 @@ class ProductCreateRequest(BaseModel):
     image_url: Optional[str] = None  # 产品主图 URL
     images: Optional[List[str]] = None  # 产品多图
     detail: Optional[str] = None  # 产品详情 HTML
+    service_fee_rate: Optional[float] = None  # 服务费比例 (0.30 = 30%)
+    agent_profit_rate: Optional[float] = None  # 区代利润比例 (0.10 = 10%)
 
 
 class ProductUpdateRequest(BaseModel):
@@ -69,11 +71,15 @@ class ProductUpdateRequest(BaseModel):
     image_url: Optional[str] = None
     images: Optional[List[str]] = None
     detail: Optional[str] = None
+    service_fee_rate: Optional[float] = None  # 服务费比例 (0.30 = 30%)
+    agent_profit_rate: Optional[float] = None  # 区代利润比例 (0.10 = 10%)
 
 
 class ProductPricesRequest(BaseModel):
     """设置产品价格请求"""
     prices: List[PriceTierInput]
+    service_fee_rate: Optional[float] = None  # 服务费比例 (0.30 = 30%)
+    agent_profit_rate: Optional[float] = None  # 区代利润比例 (0.10 = 10%)
 
 
 @router.get("")
@@ -141,6 +147,8 @@ async def list_products(
                 "description": p.description,
                 "detail": p.detail,
                 "is_new": bool(p.is_new),
+                "service_fee_rate": float(p.service_fee_rate) if p.service_fee_rate else None,
+                "agent_profit_rate": float(p.agent_profit_rate) if p.agent_profit_rate else None,
                 "prices": [
                     {"tier_type": pt.tier_type, "price": float(pt.price)}
                     for pt in p.prices
@@ -173,7 +181,9 @@ async def create_product(
         status="active",
         image_url=request.image_url,
         images=request.images,
-        detail=sanitize_html(request.detail)
+        detail=sanitize_html(request.detail),
+        service_fee_rate=request.service_fee_rate,
+        agent_profit_rate=request.agent_profit_rate
     )
     db.add(product)
     await db.flush()  # 获取 product.id
@@ -242,6 +252,8 @@ async def get_product(
         "detail": product.detail,
         "stock": product.stock,
         "is_new": bool(product.is_new),
+        "service_fee_rate": float(product.service_fee_rate) if product.service_fee_rate else None,
+        "agent_profit_rate": float(product.agent_profit_rate) if product.agent_profit_rate else None,
         "prices": [
             {"tier_type": pt.tier_type, "price": float(pt.price)}
             for pt in product.prices
@@ -283,6 +295,10 @@ async def update_product(
         product.images = request.images
     if request.detail is not None:
         product.detail = sanitize_html(request.detail)
+    if request.service_fee_rate is not None:
+        product.service_fee_rate = request.service_fee_rate
+    if request.agent_profit_rate is not None:
+        product.agent_profit_rate = request.agent_profit_rate
 
     await db.commit()
     await db.refresh(product)
@@ -318,6 +334,12 @@ async def set_product_prices(
             price=price_input.price
         )
         db.add(price_tier)
+
+    # 更新分润比例
+    if request.service_fee_rate is not None:
+        product.service_fee_rate = request.service_fee_rate
+    if request.agent_profit_rate is not None:
+        product.agent_profit_rate = request.agent_profit_rate
 
     await db.commit()
 

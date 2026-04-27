@@ -26,6 +26,8 @@ class Product(Base):
     is_new = Column(Integer, nullable=False, default=0)  # 是否新品标记
     supplier_id = Column(Integer, ForeignKey("suppliers.id"), nullable=True, index=True)  # 供应商 ID
     cost_price = Column(Numeric(10, 2), nullable=True)  # 采购成本价
+    service_fee_rate = Column(Numeric(5, 4), nullable=True)  # 服务费比例 (0.3000 = 30%)
+    agent_profit_rate = Column(Numeric(5, 4), nullable=True)  # 区代利润比例 (0.1000 = 10%)
 
     # 关联
     prices = relationship("PriceTier", back_populates="product", cascade="all, delete-orphan")

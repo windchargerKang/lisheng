@@ -30,6 +30,8 @@
               <el-select v-model="filterForm.transaction_type" placeholder="全部类型" clearable>
                 <el-option label="充值" value="RECHARGE" />
                 <el-option label="提现" value="WITHDRAW" />
+                <el-option label="订单收支" value="ORDER_PAYMENT" />
+                <el-option label="服务费" value="SERVICE_FEE" />
               </el-select>
             </el-form-item>
             <el-form-item label="状态">
@@ -50,15 +52,15 @@
         <el-table-column prop="transaction_no" label="流水号" width="180" />
         <el-table-column prop="transaction_type" label="类型" width="100">
           <template #default="{ row }">
-            <el-tag :type="row.transaction_type === 'RECHARGE' ? 'success' : 'warning'">
-              {{ row.transaction_type === 'RECHARGE' ? '充值' : '提现' }}
+            <el-tag :type="getTransactionTypeTag(row.transaction_type)">
+              {{ getTransactionTypeLabel(row.transaction_type) }}
             </el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="amount" label="金额" width="120">
           <template #default="{ row }">
-            <span :class="row.transaction_type === 'RECHARGE' ? 'text-success' : 'text-danger'">
-              {{ row.transaction_type === 'RECHARGE' ? '+' : '-' }}¥{{ row.amount }}
+            <span :class="getAmountClass(row)">
+              {{ getAmountSign(row) }}¥{{ Math.abs(getAmountValue(row)) }}
             </span>
           </template>
         </el-table-column>
@@ -133,8 +135,8 @@ interface Wallet {
 interface Transaction {
   id: number
   wallet_id: number
-  transaction_type: 'RECHARGE' | 'WITHDRAW'
-  amount: string
+  transaction_type: 'RECHARGE' | 'WITHDRAW' | 'ORDER_PAYMENT' | 'SERVICE_FEE'
+  amount: string | number
   balance_after: string
   transaction_no: string
   status: 'PENDING' | 'COMPLETED' | 'REJECTED'
@@ -231,6 +233,40 @@ const handleSubmit = async () => {
   } finally {
     submitting.value = false
   }
+}
+
+const getAmountValue = (row: Transaction) => {
+  return typeof row.amount === 'number' ? row.amount : parseFloat(row.amount)
+}
+
+const getAmountClass = (row: Transaction) => {
+  const amount = getAmountValue(row)
+  return amount >= 0 ? 'text-success' : 'text-danger'
+}
+
+const getAmountSign = (row: Transaction) => {
+  const amount = getAmountValue(row)
+  return amount >= 0 ? '+' : '-'
+}
+
+const getTransactionTypeTag = (type: string) => {
+  const tagMap: Record<string, 'success' | 'warning' | 'info'> = {
+    RECHARGE: 'success',
+    WITHDRAW: 'warning',
+    ORDER_PAYMENT: 'info',
+    SERVICE_FEE: 'info',
+  }
+  return tagMap[type] || 'info'
+}
+
+const getTransactionTypeLabel = (type: string) => {
+  const labelMap: Record<string, string> = {
+    RECHARGE: '充值',
+    WITHDRAW: '提现',
+    ORDER_PAYMENT: '订单收支',
+    SERVICE_FEE: '服务费',
+  }
+  return labelMap[type] || type
 }
 
 const getStatusType = (status: string) => {

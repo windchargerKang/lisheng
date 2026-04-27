@@ -79,23 +79,45 @@ class ProfitService:
 
         return wallet
 
-    def _calculate_profit(self, order_amount: Decimal) -> Tuple[Decimal, Decimal]:
+    async def _calculate_profit(self, order: Order) -> Tuple[Decimal, Decimal]:
         """
         计算分润金额
+
+        优先级：
+        1. 产品级配置（service_fee_rate, agent_profit_rate）
+        2. 全局默认配置（config.json）
 
         Returns:
             (service_fee, agent_profit) 元组
         """
-        config = self._load_config()
-        profit_config = config.get("profit", {})
+        # 尝试从订单商品获取分润比例（取第一个订单项的产品）
+        service_fee_rate = None
+        agent_profit_rate = None
 
-        service_fee_rate = Decimal(str(profit_config.get("service_fee_rate", 0.30)))
-        agent_profit_rate = Decimal(str(profit_config.get("agent_profit_rate", 0.10)))
+        if order.items:
+            first_item = order.items[0]
+            # 延迟加载 product，避免 N+1 查询
+            await self.db.refresh(first_item, attribute_names=['product'])
+            product = first_item.product
+            if product:
+                if product.service_fee_rate is not None:
+                    service_fee_rate = Decimal(str(product.service_fee_rate))
+                if product.agent_profit_rate is not None:
+                    agent_profit_rate = Decimal(str(product.agent_profit_rate))
+
+        # 如果产品未配置分润比例，使用全局默认配置
+        if service_fee_rate is None or agent_profit_rate is None:
+            config = self._load_config()
+            profit_config = config.get("profit", {})
+            if service_fee_rate is None:
+                service_fee_rate = Decimal(str(profit_config.get("service_fee_rate", 0.30)))
+            if agent_profit_rate is None:
+                agent_profit_rate = Decimal(str(profit_config.get("agent_profit_rate", 0.10)))
 
         # 计算分润金额（四舍五入到分，使用 ROUND_HALF_UP）
         from decimal import ROUND_HALF_UP
-        service_fee = (order_amount * service_fee_rate).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-        agent_profit = (order_amount * agent_profit_rate).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        service_fee = (order.total_amount * service_fee_rate).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        agent_profit = (order.total_amount * agent_profit_rate).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
         return service_fee, agent_profit
 
@@ -173,7 +195,7 @@ class ProfitService:
         shop_wallet = await self._get_wallet_by_user_id(verifier_user_id)
 
         # 计算分润金额
-        service_fee, agent_profit = self._calculate_profit(order.total_amount)
+        service_fee, agent_profit = await self._calculate_profit(order)
 
         # 检查 lisheng 余额是否充足
         total_profit = service_fee + agent_profit
